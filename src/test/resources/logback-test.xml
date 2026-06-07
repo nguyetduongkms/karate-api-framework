@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Logback configuration for the test environment.
+  Suppresses verbose output from third-party libraries, keeping Karate logs clean.
+-->
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Suppress verbose logging from Apache HttpClient -->
+    <logger name="org.apache.http" level="WARN"/>
+    <!-- Karate HTTP log: INFO level to see request/response summary -->
+    <logger name="com.intuit.karate" level="INFO"/>
+
+    <root level="WARN">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

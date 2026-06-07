@@ -1,0 +1,5 @@
+baseUrl: https://api.anhtester.com
+connectTimeout: 10000
+readTimeout: 30000
+logLevel: debug
+ssl: false

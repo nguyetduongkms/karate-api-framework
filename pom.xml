@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ============================================================ -->
+    <!--  PROJECT INFORMATION                                          -->
+    <!-- ============================================================ -->
+    <groupId>com.anhtester</groupId>
+    <artifactId>karate-api-framework</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>Karate API Test Framework - Anh Tester</name>
+    <description>
+        Automated API testing framework using Karate + JUnit5
+        Target: https://api.anhtester.com
+    </description>
+
+    <properties>
+        <!-- Java version -->
+        <java.version>21</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Library versions - centralized for easy upgrades -->
+        <karate.version>1.5.1</karate.version>
+        <junit5.version>5.10.2</junit5.version>
+        <cucumber.reporting.version>5.11.0</cucumber.reporting.version>
+        <maven.surefire.version>3.2.5</maven.surefire.version>
+
+        <!-- Report output directory -->
+        <report.output.dir>${project.build.directory}/cucumber-html-reports</report.output.dir>
+    </properties>
+
+    <dependencies>
+
+        <!-- ============================================================ -->
+        <!--  [1] KARATE - Core Engine (includes Gherkin/BDD parser)      -->
+        <!--  Built-in: HTTP client, JSON/XML assert, JS engine           -->
+        <!-- ============================================================ -->
+        <dependency>
+            <groupId>io.karatelabs</groupId>
+            <artifactId>karate-junit5</artifactId>
+            <version>${karate.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- ============================================================ -->
+        <!--  [2] JUNIT 5 - Test Engine for parallel execution            -->
+        <!-- ============================================================ -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit5.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- ============================================================ -->
+        <!--  [3] MASTERTHOUGHT CUCUMBER REPORTING                        -->
+        <!--  Generates HTML Report with Pie Chart, tag charts, timeline  -->
+        <!-- ============================================================ -->
+        <dependency>
+            <groupId>net.masterthought</groupId>
+            <artifactId>cucumber-reporting</artifactId>
+            <version>${cucumber.reporting.version}</version>
+            <!-- No test scope needed — used in @AfterSuite hook -->
+        </dependency>
+
+        <!-- ============================================================ -->
+        <!--  [4] LOGBACK - Cleaner logging for debugging                 -->
+        <!-- ============================================================ -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.14</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- ============================================================ -->
+        <!--  [5] DOTENV-JAVA - Load .env file for local secret management -->
+        <!--  CI/CD: set real env vars instead; .env is gitignored        -->
+        <!-- ============================================================ -->
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>dotenv-java</artifactId>
+            <version>3.0.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.15.1</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
+
+        <!-- ============================================================ -->
+        <!--  IMPORTANT: Include .feature and .js files on the classpath  -->
+        <!--  Karate resolves files via classpath, not filesystem path    -->
+        <!-- ============================================================ -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>false</filtering>
+            </testResource>
+            <!-- Allow the Java runner to locate .feature files in the same package -->
+            <testResource>
+                <directory>src/test/java</directory>
+                <includes>
+                    <include>**/*.feature</include>
+                    <include>**/*.json</include>
+                    <include>**/*.yaml</include>
+                    <include>**/*.js</include>
+                </includes>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <!-- ============================================================ -->
+            <!--  MAVEN SUREFIRE PLUGIN - Orchestrates JUnit 5 execution      -->
+            <!--  fork=1 thread/CPU: avoids conflicts during parallel runs    -->
+            <!-- ============================================================ -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.version}</version>
+                <configuration>
+                    <!-- Enable JUnit Platform (JUnit 5) -->
+                    <useModulePath>false</useModulePath>
+
+                    <!-- Allow system properties to be passed from the command line: -->
+                    <!-- mvn test -Dkarate.env=staging                               -->
+                    <systemPropertyVariables>
+                        <karate.env>${karate.env}</karate.env>
+                    </systemPropertyVariables>
+
+                    <!-- Continue running even if tests fail (to collect full report) -->
+                    <failIfNoTests>false</failIfNoTests>
+                    <testFailureIgnore>false</testFailureIgnore>
+
+                    <!-- Path to JSON output for cucumber reporting -->
+                    <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+                </configuration>
+            </plugin>
+
+            <!-- ============================================================ -->
+            <!--  MAVEN COMPILER PLUGIN - Ensures correct Java version        -->
+            <!-- ============================================================ -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.12.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
