@@ -1,0 +1,4432 @@
+{
+  "info": {
+    "_postman_id": "37bfd506-53fb-4ac2-9b00-4887ed1ad298",
+    "name": "NguyenHoangTrung_AnhTesterAPI",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55270207",
+    "_collection_link": "https://go.postman.co/collection/55270207-37bfd506-53fb-4ac2-9b00-4887ed1ad298?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Signup",
+          "item": [
+            {
+              "name": "Register - Happy Path",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      " ",
+                      "pm.test(\"Response message is correct\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.message).to.eql(\"Success\");",
+                      "});",
+                      " ",
+                      "pm.test(\"Response contains username\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.response.username).to.eql(\"nghoangtrung\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\": \"nghoangtrungg\",\r\n    \"firstName\": \"Trung\",\r\n    \"lastName\": \"Nguyen\",\r\n    \"email\": \"trunghnguyen123@gmail.com\",\r\n    \"password\": \"htrung\",\r\n    \"phone\": \"0935890195\",\r\n    \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/register",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "register"
+                  ]
+                },
+                "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+              },
+              "response": []
+            },
+            {
+              "name": "Register - Missing Username",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error mentions username is required\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"username\");",
+                      "    pm.expect(errors).to.include(\"required\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\": \"\",\r\n    \"firstName\": \"Trung\",\r\n    \"lastName\": \"Nguyen\",\r\n    \"email\": \"trung@email.com\",\r\n    \"password\": \"htrung\",\r\n    \"phone\": \"0935890195\",\r\n    \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/register",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "register"
+                  ]
+                },
+                "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+              },
+              "response": []
+            },
+            {
+              "name": "Register - Missing Email",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error mentions email is required\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"email\");",
+                      "    pm.expect(errors).to.include(\"required\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\": \"nghoangtrung\",\r\n    \"firstName\": \"Trung\",\r\n    \"lastName\": \"Nguyen\",\r\n    \"email\": \"\",\r\n    \"password\": \"htrung\",\r\n    \"phone\": \"0935890195\",\r\n    \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/register",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "register"
+                  ]
+                },
+                "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+              },
+              "response": []
+            },
+            {
+              "name": "Register - Missing Password",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error mentions password is invalid\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"password\");",
+                      "    pm.expect(errors).to.include(\"invalid\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\": \"nghoangtrung\",\r\n    \"firstName\": \"Trung\",\r\n    \"lastName\": \"Nguyen\",\r\n    \"email\": \"trung@email.com\",\r\n    \"password\": \"\",\r\n    \"phone\": \"0935890195\",\r\n    \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/register",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "register"
+                  ]
+                },
+                "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+              },
+              "response": []
+            },
+            {
+              "name": "Register - Existed Username",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error says username already taken\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"username\");",
+                      "    pm.expect(errors).to.include(\"already been taken\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\": \"trunghnguyen\",\r\n    \"firstName\": \"Trung\",\r\n    \"lastName\": \"Nguyen\",\r\n    \"email\": \"trung@email.com\",\r\n    \"password\": \"htrung\",\r\n    \"phone\": \"0935890195\",\r\n    \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/register",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "register"
+                  ]
+                },
+                "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+              },
+              "response": []
+            },
+            {
+              "name": "Register - Missing First Name",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error mentions firstName is required\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"firstName\");",
+                      "    pm.expect(errors).to.include(\"required\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\": \"nghoangtrung\",\r\n    \"firstName\": \"\",\r\n    \"lastName\": \"Nguyen\",\r\n    \"email\": \"trung@email.com\",\r\n    \"password\": \"htrung\",\r\n    \"phone\": \"0935890195\",\r\n    \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/register",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "register"
+                  ]
+                },
+                "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+              },
+              "response": []
+            },
+            {
+              "name": "Register - Missing Last Name",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error mentions lastName is required\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"lastName\");",
+                      "    pm.expect(errors).to.include(\"required\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\": \"nghoangtrung\",\r\n    \"firstName\": \"Trung\",\r\n    \"lastName\": \"\",\r\n    \"email\": \"trung@email.com\",\r\n    \"password\": \"htrung\",\r\n    \"phone\": \"0935890195\",\r\n    \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/register",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "register"
+                  ]
+                },
+                "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+              },
+              "response": []
+            },
+            {
+              "name": "Register - Missing User Status",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error mentions userStatus is required\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"userStatus\");",
+                      "    pm.expect(errors).to.include(\"required\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\": \"nghoangtrung\",\r\n    \"firstName\": \"Trung\",\r\n    \"lastName\": \"Nguyen\",\r\n    \"email\": \"trung@email.com\",\r\n    \"password\": \"htrung\",\r\n    \"phone\": \"0935890195\",\r\n    \"userStatus\": \"\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/register",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "register"
+                  ]
+                },
+                "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+              },
+              "response": []
+            },
+            {
+              "name": "Register - Existed Email",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error says email already taken\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"email\");",
+                      "    pm.expect(errors).to.include(\"already been taken\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\": \"trunghnguyenn\",\r\n    \"firstName\": \"Trung\",\r\n    \"lastName\": \"Nguyen\",\r\n    \"email\": \"trunghnguyen1234@gmail.com\",\r\n    \"password\": \"htrung\",\r\n    \"phone\": \"0935890195\",\r\n    \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/register",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "register"
+                  ]
+                },
+                "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+              },
+              "response": []
+            },
+            {
+              "name": "Register - Invalid Email Format",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error says email is invalid\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"email\");",
+                      "    pm.expect(errors).to.include(\"valid\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\": \"nghoangtrung\",\r\n    \"firstName\": \"Trung\",\r\n    \"lastName\": \"Nguyen\",\r\n    \"email\": \"trung_email.com\",\r\n    \"password\": \"htrung\",\r\n    \"phone\": \"0935890195\",\r\n    \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/register",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "register"
+                  ]
+                },
+                "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+              },
+              "response": []
+            },
+            {
+              "name": "Register - Invalid Phone",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error says phone is invalid\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"phone\");",
+                      "    pm.expect(errors).to.include(\"invalid\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\": \"nghoangtrung\",\r\n    \"firstName\": \"Trung\",\r\n    \"lastName\": \"Nguyen\",\r\n    \"email\": \"trung@email.com\",\r\n    \"password\": \"htrung\",\r\n    \"phone\": \"09358901\",\r\n    \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/register",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "register"
+                  ]
+                },
+                "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+              },
+              "response": []
+            },
+            {
+              "name": "Register - Missing Phone Field",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 500\", function () {",
+                      "    pm.response.to.have.status(500);",
+                      "});",
+                      " ",
+                      "pm.test(\"Response message is Server Error\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.message).to.eql(\"Server Error\");",
+                      "});",
+                      " ",
+                      "pm.test(\"Response has message field\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json).to.have.property(\"message\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\": \"nghoangtrung\",\r\n    \"firstName\": \"Trung\",\r\n    \"lastName\": \"Nguyen\",\r\n    \"email\": \"trung@email.com\",\r\n    \"password\": \"htrung\",\r\n    \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/register",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "register"
+                  ]
+                },
+                "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "item": [
+            {
+              "name": "Login - Happy Path",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      " ",
+                      "pm.test(\"Token is present and saved\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.token).to.be.a(\"string\").and.not.empty;",
+                      "    pm.environment.set(\"token\", json.token);",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"username\": \"trunghnguyen\",\n    \"password\": \"htrung\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "login"
+                  ]
+                },
+                "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+              },
+              "response": []
+            },
+            {
+              "name": "Login - Invalid Username",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      " ",
+                      "pm.test(\"Response message is Login failed\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.message).to.eql(\"Login failed\");",
+                      "});",
+                      " ",
+                      "pm.test(\"Error reason mentions user not found\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json).to.have.property(\"errors\");",
+                      "    pm.expect(json.errors).to.include(\"not found\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"trunghnguyenn\",\n  \"password\": \"htrung\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "login"
+                  ]
+                },
+                "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+              },
+              "response": []
+            },
+            {
+              "name": "Login - Invalid Password",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      " ",
+                      "pm.test(\"Response message is Login failed\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.message).to.eql(\"Login failed\");",
+                      "});",
+                      " ",
+                      "pm.test(\"Error reason mentions incorrect password\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json).to.have.property(\"errors\");",
+                      "    pm.expect(json.errors).to.include(\"incorrect\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"trunghnguyen\",\n  \"password\": \"htrungg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "login"
+                  ]
+                },
+                "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+              },
+              "response": []
+            },
+            {
+              "name": "Login - Missing Password",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error mentions password is required\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"password\");",
+                      "    pm.expect(errors).to.include(\"required\");",
+                      "});",
+                      " ",
+                      "pm.test(\"Response has errors field\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json).to.have.property(\"errors\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"nghoangtrung\",\n  \"password\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "login"
+                  ]
+                },
+                "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+              },
+              "response": []
+            },
+            {
+              "name": "Login - Missing Username",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error mentions username is required\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"username\");",
+                      "    pm.expect(errors).to.include(\"required\");",
+                      "});",
+                      " ",
+                      "pm.test(\"Response has errors field\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json).to.have.property(\"errors\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"\",\n  \"password\": \"htrung\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "login"
+                  ]
+                },
+                "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+              },
+              "response": []
+            },
+            {
+              "name": "Login - Invalid Username and Password",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      " ",
+                      "pm.test(\"Response message is Login failed\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.message).to.eql(\"Login failed\");",
+                      "});",
+                      " ",
+                      "pm.test(\"Error reason mentions user not found\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json).to.have.property(\"errors\");",
+                      "    pm.expect(json.errors).to.include(\"not found\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"wronguser\",\n  \"password\": \"wrongpass\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Login - userStatus is 0",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      " ",
+                      "pm.test(\"Response message is Login failed\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.message).to.eql(\"Login failed\");",
+                      "});",
+                      " ",
+                      "pm.test(\"Error reason mentions InActive\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json).to.have.property(\"errors\");",
+                      "    pm.expect(json.errors).to.include(\"InActive\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"trunghnguyen1\",\n  \"password\": \"htrung\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Login - Changed Username",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      " ",
+                      "pm.test(\"Response message is Login failed\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.message).to.eql(\"Login failed\");",
+                      "});",
+                      "",
+                      "pm.test(\"Error reason mentions user not found\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json).to.have.property(\"errors\");",
+                      "    pm.expect(json.errors).to.include(\"not found\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"nghoangtrung1\",\n  \"password\": \"htrung\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Login - Changed Password",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      " ",
+                      "pm.test(\"Response message is Login failed\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.message).to.eql(\"Login failed\");",
+                      "});",
+                      " ",
+                      "pm.test(\"Error reason mentions incorrect password\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json).to.have.property(\"errors\");",
+                      "    pm.expect(json.errors).to.include(\"incorrect\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"nghoangtrungg\",\n  \"password\": \"htrungg\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Create Users Array",
+          "item": [
+            {
+              "name": "Create Users Array - Happy Path",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response message is correct\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.message).to.eql(\"Success\");\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response array is not empty\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.response).to.be.an(\"array\").and.not.empty;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\r\n    {\r\n        \"username\": \"JJames\",\r\n        \"firstName\": \"John\",\r\n        \"lastName\": \"James\",\r\n        \"email\": \"jjames@email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": 1\r\n    },\r\n        {\r\n        \"username\": \"BWhite\",\r\n        \"firstName\": \"Ben\",\r\n        \"lastName\": \"White\",\r\n        \"email\": \"benwhite@email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": 1\r\n    }\r\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Users Array - Missing Username[]",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error mentions username is required\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"username\");",
+                      "    pm.expect(errors).to.include(\"required\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\r\n    {\r\n        \"username\": null,\r\n        \"firstName\": \"John\",\r\n        \"lastName\": \"James\",\r\n        \"email\": \"jjames@email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": 1\r\n    },\r\n        {\r\n        \"username\": \"\",\r\n        \"firstName\": \"Ben\",\r\n        \"lastName\": \"White\",\r\n        \"email\": \"benwhite@email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": 1\r\n    }\r\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Users Array - Missing Email[]",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error mentions email is required\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"email\");",
+                      "    pm.expect(errors).to.include(\"required\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\r\n    {\r\n        \"username\": \"JJames\",\r\n        \"firstName\": \"John\",\r\n        \"lastName\": \"James\",\r\n        \"email\": null,\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": 1\r\n    },\r\n        {\r\n        \"username\": \"BWhite\",\r\n        \"firstName\": \"Ben\",\r\n        \"lastName\": \"White\",\r\n        \"email\": \"\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": 1\r\n    }\r\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Users Array - Missing Password[]",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error mentions password is invalid\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"password\");",
+                      "    pm.expect(errors).to.include(\"invalid\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\r\n    {\r\n        \"username\": \"JJames\",\r\n        \"firstName\": \"John\",\r\n        \"lastName\": \"James\",\r\n        \"email\": \"jjames@email.com\",\r\n        \"password\": null,\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": 1\r\n    },\r\n        {\r\n        \"username\": \"BWhite\",\r\n        \"firstName\": \"Ben\",\r\n        \"lastName\": \"White\",\r\n        \"email\": \"benwhite@email.com\",\r\n        \"password\": \"\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": 1\r\n    }\r\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Users Array - Existed Username[]",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error says username already taken\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"username\");",
+                      "    pm.expect(errors).to.include(\"already been taken\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\r\n    {\r\n        \"username\": \"trunghnguyen\",\r\n        \"firstName\": \"Trung\",\r\n        \"lastName\": \"Nguyen\",\r\n        \"email\": \"trung@email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": 1\r\n    }\r\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Users Array - Missing FirstName[]",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error mentions firstName is required\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"firstName\");",
+                      "    pm.expect(errors).to.include(\"required\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\r\n    {\r\n        \"username\": \"JJames\",\r\n        \"firstName\": null,\r\n        \"lastName\": \"James\",\r\n        \"email\": \"jjames@email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": 1\r\n    },\r\n        {\r\n        \"username\": \"BWhite\",\r\n        \"firstName\": \"\",\r\n        \"lastName\": \"White\",\r\n        \"email\": \"benwhite@email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": 1\r\n    }\r\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Users Array - Missing LastName[]",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error mentions lastName is required\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"lastName\");",
+                      "    pm.expect(errors).to.include(\"required\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\r\n    {\r\n        \"username\": \"JJames\",\r\n        \"firstName\": \"John\",\r\n        \"lastName\": null,\r\n        \"email\": \"jjames@email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": 1\r\n    },\r\n        {\r\n        \"username\": \"BWhite\",\r\n        \"firstName\": \"Ben\",\r\n        \"lastName\": \"\",\r\n        \"email\": \"benwhite@email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": 1\r\n    }\r\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Users Array - Missing userStatus[]",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error mentions userStatus is required\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"userStatus\");",
+                      "    pm.expect(errors).to.include(\"required\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\r\n    {\r\n        \"username\": \"JJames\",\r\n        \"firstName\": \"John\",\r\n        \"lastName\": \"James\",\r\n        \"email\": \"jjames@email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": null\r\n    },\r\n        {\r\n        \"username\": \"BWhite\",\r\n        \"firstName\": \"Ben\",\r\n        \"lastName\": \"White\",\r\n        \"email\": \"benwhite@email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": \"\"\r\n    }\r\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Users Array - Existed Email[]",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error says email already taken\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"email\");",
+                      "    pm.expect(errors).to.include(\"already been taken\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\r\n    {\r\n        \"username\": \"nghoangtrunggg\",\r\n        \"firstName\": \"Trung\",\r\n        \"lastName\": \"Nguyen\",\r\n        \"email\": \"trunghnguyen123@gmail.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": 1\r\n    }\r\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Users Array - Invalid Email[] Format",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error says email is invalid\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"email\");",
+                      "    pm.expect(errors).to.include(\"valid\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\r\n    {\r\n        \"username\": \"JJames\",\r\n        \"firstName\": \"John\",\r\n        \"lastName\": \"James\",\r\n        \"email\": \"jjames_email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": 1\r\n    },\r\n        {\r\n        \"username\": \"BWhite\",\r\n        \"firstName\": \"Ben\",\r\n        \"lastName\": \"White\",\r\n        \"email\": \"@email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": 1\r\n    }\r\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Users Array - Missing Phone[]",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      " ",
+                      "pm.test(\"Error says phone is invalid\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var errors = JSON.stringify(json.errors);",
+                      "    pm.expect(errors).to.include(\"phone\");",
+                      "    pm.expect(errors).to.include(\"invalid\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\r\n    {\r\n        \"username\": \"JJames\",\r\n        \"firstName\": \"John\",\r\n        \"lastName\": \"James\",\r\n        \"email\": \"jjames@email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": null,\r\n        \"userStatus\": 1\r\n    },\r\n        {\r\n        \"username\": \"BWhite\",\r\n        \"firstName\": \"Ben\",\r\n        \"lastName\": \"White\",\r\n        \"email\": \"benwhite@email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"\",\r\n        \"userStatus\": 1\r\n    }\r\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Users Array - Missing Phone[] Field",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 500\", function () {",
+                      "    pm.response.to.have.status(500);",
+                      "});",
+                      " ",
+                      "pm.test(\"Response message is Server Error\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.message).to.eql(\"Server Error\");",
+                      "});",
+                      " ",
+                      "pm.test(\"Response has message field\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json).to.have.property(\"message\");",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\r\n    {\r\n        \"username\": \"JJames\",\r\n        \"firstName\": \"John\",\r\n        \"lastName\": \"James\",\r\n        \"email\": \"jjames@email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"userStatus\": 1\r\n    },\r\n        {\r\n        \"username\": \"BWhite\",\r\n        \"firstName\": \"Ben\",\r\n        \"lastName\": \"White\",\r\n        \"email\": \"benwhite@email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"userStatus\": 1\r\n    }\r\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Update User",
+          "item": [
+            {
+              "name": "Update User - Happy Path",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response message is correct\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.message).to.eql(\"Success\");\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response contains updated username\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.response.username).to.be.a(\"string\").and.not.empty;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"username\": \"Ka1\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"kaihaverzt@email.com\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{user_path }}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "25324"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update User - Missing Username",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {\r",
+                      "    pm.response.to.have.status(422);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Error mentions username is required\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    var errors = JSON.stringify(json.errors);\r",
+                      "    pm.expect(errors).to.include(\"username\");\r",
+                      "    pm.expect(errors).to.include(\"required\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"username\": \"\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"kai@email.com\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{user_path }}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{user_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update User - Missing Email",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {\r",
+                      "    pm.response.to.have.status(422);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Error mentions email is required\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    var errors = JSON.stringify(json.errors);\r",
+                      "    pm.expect(errors).to.include(\"email\");\r",
+                      "    pm.expect(errors).to.include(\"required\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"username\": \"kai123\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{user_path }}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{user_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update User - Missing Password",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {\r",
+                      "    pm.response.to.have.status(422);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Error mentions password is invalid\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    var errors = JSON.stringify(json.errors);\r",
+                      "    pm.expect(errors).to.include(\"password\");\r",
+                      "    pm.expect(errors).to.include(\"invalid\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"username\": \"kai123\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"kai@email.com\",\r\n  \"password\": \"\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{user_path }}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{user_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update User - Existed Username",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {\r",
+                      "    pm.response.to.have.status(422);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Error says username already taken\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    var errors = JSON.stringify(json.errors);\r",
+                      "    pm.expect(errors).to.include(\"username\");\r",
+                      "    pm.expect(errors).to.include(\"already been taken\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"username\": \"trunghnguyen\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"kai@email.com\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{user_path }}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{user_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update User - Missing First Name",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {\r",
+                      "    pm.response.to.have.status(422);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Error mentions firstName is required\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    var errors = JSON.stringify(json.errors);\r",
+                      "    pm.expect(errors).to.include(\"firstName\");\r",
+                      "    pm.expect(errors).to.include(\"required\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"username\": \"kai123\",\r\n  \"firstName\": \"\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"kai@email.com\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{user_path }}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{user_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update User - Missing Last Name",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {\r",
+                      "    pm.response.to.have.status(422);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Error mentions lastName is required\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    var errors = JSON.stringify(json.errors);\r",
+                      "    pm.expect(errors).to.include(\"lastName\");\r",
+                      "    pm.expect(errors).to.include(\"required\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"username\": \"kai123\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"\",\r\n  \"email\": \"kai@email.com\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{user_path }}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{user_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update User - Missing User Status",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {\r",
+                      "    pm.response.to.have.status(422);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Error mentions userStatus is required\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    var errors = JSON.stringify(json.errors);\r",
+                      "    pm.expect(errors).to.include(\"userStatus\");\r",
+                      "    pm.expect(errors).to.include(\"required\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"username\": \"kai123\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"kai@email.com\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": \"\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{user_path }}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{user_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update User - Existed Email",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {\r",
+                      "    pm.response.to.have.status(422);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Error says email already taken\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    var errors = JSON.stringify(json.errors);\r",
+                      "    pm.expect(errors).to.include(\"email\");\r",
+                      "    pm.expect(errors).to.include(\"already been taken\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"username\": \"kai123\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"trunghnguyen123@gmail.com\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{user_path }}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{user_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update User - Invalid Email Pattern",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {\r",
+                      "    pm.response.to.have.status(422);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Error says email is invalid\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    var errors = JSON.stringify(json.errors);\r",
+                      "    pm.expect(errors).to.include(\"email\");\r",
+                      "    pm.expect(errors).to.include(\"valid\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"username\": \"kai123\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"kai_email.com\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{user_path }}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{user_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update User - Phone Number is Null",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {\r",
+                      "    pm.response.to.have.status(422);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Error says phone is invalid\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    var errors = JSON.stringify(json.errors);\r",
+                      "    pm.expect(errors).to.include(\"phone\");\r",
+                      "    pm.expect(errors).to.include(\"invalid\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"username\": \"kai123\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"kai@email.com\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": null,\r\n  \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{user_path }}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{user_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update User - Missing Phone Number Field",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 500\", function () {\r",
+                      "    pm.response.to.have.status(500);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response message is Server Error\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.message).to.eql(\"Server Error\");\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response has message field\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json).to.have.property(\"message\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"username\": \"kai123\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"kai@email.com\",\r\n  \"password\": \"Demo@123\",\r\n  \"userStatus\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{user_path }}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{user_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Book",
+      "item": [
+        {
+          "name": "Create Book",
+          "item": [
+            {
+              "name": "Create Book - Happy Path",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response message is correct\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.message).to.eql(\"Success\");\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response contains book id\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.response.id).to.be.a(\"number\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Introduction to Testing v1.0\",\r\n    \"category_id\": 375,\r\n    \"price\": 25000,\r\n    \"release_date\": \"2026/06/10\",\r\n    \"image_ids\": [\r\n        16,\r\n        17\r\n    ],\r\n    \"status\": true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{book_path}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{book_path}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Book - Missing Token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response message is Unauthenticated\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.message).to.eql(\"Unauthenticated.\");\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response has message field\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json).to.have.property(\"message\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"Tester v1.1\",\r\n  \"category_id\": 1,\r\n  \"price\": 1200,\r\n  \"release_date\": \"2023/12/29\",\r\n  \"image_ids\": [\r\n    1\r\n  ],\r\n  \"status\": true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{book_path}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{book_path}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Book - Invalid Token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response message is Unauthenticated\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.message).to.eql(\"Unauthenticated.\");\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response has message field\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json).to.have.property(\"message\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "37363|C7B2QV2n4gQsyivqc0j1jceYNblk8ezfpp44Wv7q351487861",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"Tester v1.1\",\r\n  \"category_id\": 1,\r\n  \"price\": 1200,\r\n  \"release_date\": \"2023/12/29\",\r\n  \"image_ids\": [\r\n    1\r\n  ],\r\n  \"status\": true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{book_path}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{book_path}}"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Update Book",
+          "item": [
+            {
+              "name": "Update Book - Happy Path",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response message is correct\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.message).to.eql(\"Success\");\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response contains updated name\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.response.name).to.be.a(\"string\").and.not.empty;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Tester v1.100\",\r\n    \"category_id\": 350,\r\n    \"price\": 1200,\r\n    \"release_date\": \"2023/12/29\",\r\n    \"image_ids\": [\r\n        12,\r\n        13\r\n    ],\r\n    \"status\": true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{book_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{book_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{book_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Book - Missing Name",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {\r",
+                      "    pm.response.to.have.status(422);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Error mentions name is required\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    var errors = JSON.stringify(json.errors);\r",
+                      "    pm.expect(errors).to.include(\"name\");\r",
+                      "    pm.expect(errors).to.include(\"required\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"\",\r\n    \"category_id\": 350,\r\n    \"price\": 1200,\r\n    \"release_date\": \"2023/12/29\",\r\n    \"image_ids\": [\r\n        12,\r\n        13\r\n    ],\r\n    \"status\": true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{book_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{book_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{book_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Book - Missing Price",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {\r",
+                      "    pm.response.to.have.status(422);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Error mentions price is required\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    var errors = JSON.stringify(json.errors);\r",
+                      "    pm.expect(errors).to.include(\"price\");\r",
+                      "    pm.expect(errors).to.include(\"required\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Tester v1.100\",\r\n    \"category_id\": 350,\r\n    \"price\": \"\",\r\n    \"release_date\": \"2023/12/29\",\r\n    \"image_ids\": [\r\n        12,\r\n        13\r\n    ],\r\n    \"status\": true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{book_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{book_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{book_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Book - Missing Release Date",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {\r",
+                      "    pm.response.to.have.status(422);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Error mentions release date is required\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    var errors = JSON.stringify(json.errors);\r",
+                      "    pm.expect(errors).to.include(\"release date\");\r",
+                      "    pm.expect(errors).to.include(\"required\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Tester v1.100\",\r\n    \"category_id\": 350,\r\n    \"price\": 1200,\r\n    \"release_date\": \"\",\r\n    \"image_ids\": [\r\n        12,\r\n        13\r\n    ],\r\n    \"status\": true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{book_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{book_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{book_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Book - Missing Status",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {\r",
+                      "    pm.response.to.have.status(422);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Error mentions status is required\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    var errors = JSON.stringify(json.errors);\r",
+                      "    pm.expect(errors).to.include(\"status\");\r",
+                      "    pm.expect(errors).to.include(\"required\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Tester v1.100\",\r\n    \"category_id\": 350,\r\n    \"price\": 1200,\r\n    \"release_date\": \"2023/12/29\",\r\n    \"image_ids\": [\r\n        12,\r\n        13\r\n    ],\r\n    \"status\": \"\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{book_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{book_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{book_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Book - Missing Category",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {\r",
+                      "    pm.response.to.have.status(422);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Error mentions category is required\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    var errors = JSON.stringify(json.errors);\r",
+                      "    pm.expect(errors).to.include(\"category\");\r",
+                      "    pm.expect(errors).to.include(\"required\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Tester v1.100\",\r\n    \"category_id\": \"\",\r\n    \"price\": 1200,\r\n    \"release_date\": \"2023/12/29\",\r\n    \"image_ids\": [\r\n        12,\r\n        13\r\n    ],\r\n    \"status\": true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{book_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{book_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{book_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Book - Missing Image Id",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {\r",
+                      "    pm.response.to.have.status(422);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Error mentions image ids is required\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    var errors = JSON.stringify(json.errors);\r",
+                      "    pm.expect(errors).to.include(\"image ids\");\r",
+                      "    pm.expect(errors).to.include(\"required\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Tester v1.100\",\r\n    \"category_id\": 350,\r\n    \"price\": 1200,\r\n    \"release_date\": \"2023/12/29\",\r\n    \"image_ids\": [],\r\n    \"status\": true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{book_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{book_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{book_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Book - Existed Name",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {\r",
+                      "    pm.response.to.have.status(422);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Error says name already taken\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    var errors = JSON.stringify(json.errors);\r",
+                      "    pm.expect(errors).to.include(\"name\");\r",
+                      "    pm.expect(errors).to.include(\"already been taken\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Tester v1.1\",\r\n    \"category_id\": 350,\r\n    \"price\": 1200,\r\n    \"release_date\": \"2023/12/29\",\r\n    \"image_ids\": [\r\n        12,\r\n        13\r\n    ],\r\n    \"status\": true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{book_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{book_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{book_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Book - Image is not existed",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {\r",
+                      "    pm.response.to.have.status(422);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Error says image id is invalid\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    var errors = JSON.stringify(json.errors);\r",
+                      "    pm.expect(errors).to.include(\"image\");\r",
+                      "    pm.expect(errors).to.include(\"invalid\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Tester v1.100\",\r\n    \"category_id\": 350,\r\n    \"price\": 1200,\r\n    \"release_date\": \"2023/12/29\",\r\n    \"image_ids\": [\r\n        14\r\n    ],\r\n    \"status\": true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{book_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{book_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{book_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Get Book by Id",
+          "item": [
+            {
+              "name": "Get Book by Id - Happy Path",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response message is correct\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.message).to.eql(\"Success\");\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response contains book id\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.response.id).to.be.a(\"number\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/{{book_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{book_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "1328"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Book by Id - Invalid Id",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response message is Not found\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.message).to.eql(\"Not found\");\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response has message field\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json).to.have.property(\"message\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/{{book_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{book_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "10000"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Category",
+      "item": [
+        {
+          "name": "Get All Category",
+          "item": [
+            {
+              "name": "Get All Categories - Happy Path",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response message is correct\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.message).to.eql(\"Success\");\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response is an array\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.response).to.be.an(\"array\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/categorys",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "categorys"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Delete Category",
+          "item": [
+            {
+              "name": "Delete Category - Happy Path",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response message is correct\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.message).to.eql(\"Success\");\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response has message field\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json).to.have.property(\"message\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/{{category_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{category_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{category_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Category - Invalid Token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response message is Unauthenticated\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.message).to.eql(\"Unauthenticated.\");\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response has message field\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json).to.have.property(\"message\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "12600|uGAkwDOGQNxhsXx4kj0wdOAVAsAfi9i4txfK6K",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/{{category_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{category_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{category_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Category - ID not exits",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response message is Not found\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.message).to.eql(\"Not found\");\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response has message field\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json).to.have.property(\"message\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/{{category_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{category_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "10000"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Image",
+      "item": [
+        {
+          "name": "Update Image",
+          "item": [
+            {
+              "name": "Update Image- Happy Path",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response message is correct\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.message).to.eql(\"Success\");\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response contains image id\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.response.id).to.be.a(\"number\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "image/*",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "99696c5a-4275-480b-83a7-fc9e0dd12ce7",
+                      "src": "postman-cloud:///1f164973-c29f-4ce0-814c-1d5899a6577a"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{image_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{image_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{image_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Image- Missing Image",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {\r",
+                      "    pm.response.to.have.status(422);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response message is correct\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.message).to.eql(\"The image field is required.\");\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Error mentions image field\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(JSON.stringify(json.errors)).to.include(\"image\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{image_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{image_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{image_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Image- Invalid Token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response message is Unauthenticated\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.message).to.eql(\"Unauthenticated.\");\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response has message field\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json).to.have.property(\"message\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "37363|C7B2QV2n4gQsyivqc0j1jceYNblk8ezfpp44Wv7q351487861",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/{{image_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{image_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{image_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Image- Missing Token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response message is correct\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.message).to.eql(\"Unauthenticated.\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response has message field\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json).to.have.property(\"message\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "file",
+                  "file": {}
+                },
+                "url": {
+                  "raw": "{{base_url}}/{{image_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{image_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{image_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
