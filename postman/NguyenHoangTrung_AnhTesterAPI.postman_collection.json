@@ -1,11 +1,11 @@
 {
   "info": {
-    "_postman_id": "37bfd506-53fb-4ac2-9b00-4887ed1ad298",
+    "_postman_id": "98b9103c-79e5-47b1-9928-d1de7b3d2b8d",
     "name": "NguyenHoangTrung_AnhTesterAPI",
     "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "55270207",
-    "_collection_link": "https://go.postman.co/collection/55270207-37bfd506-53fb-4ac2-9b00-4887ed1ad298?source=collection_link"
+    "_collection_link": "https://go.postman.co/collection/55270207-98b9103c-79e5-47b1-9928-d1de7b3d2b8d?source=collection_link"
   },
   "item": [
     {
@@ -24,16 +24,43 @@
                       "pm.test(\"Status code is 200\", function () {",
                       "    pm.response.to.have.status(200);",
                       "});",
-                      " ",
-                      "pm.test(\"Response message is correct\", function () {",
+                      "",
+                      "pm.test(\"Response metadata is valid\", function () {",
                       "    var json = pm.response.json();",
                       "    pm.expect(json.message).to.eql(\"Success\");",
                       "});",
-                      " ",
-                      "pm.test(\"Response contains username\", function () {",
+                      "",
+                      "pm.test(\"Validate returned user profile matches input data\", function () {",
                       "    var json = pm.response.json();",
-                      "    pm.expect(json.response.username).to.eql(\"nghoangtrung\");",
-                      "});"
+                      "    var userData = json.response;",
+                      "    ",
+                      "    pm.expect(userData.username).to.eql(pm.environment.get(\"username\"));",
+                      "    pm.expect(userData.email).to.eql(pm.environment.get(\"email\"));",
+                      "    pm.expect(userData.phone).to.eql(pm.environment.get(\"phone\"));",
+                      "    pm.expect(userData.id).to.be.a(\"number\");",
+                      "    pm.expect(userData.userStatus).to.eql(1);",
+                      "    pm.expect(userData.firstName).to.eql(\"Trung\");",
+                      "    pm.expect(userData.lastName).to.eql(\"Nguyen\");",
+                      "});",
+                      "",
+                      "pm.environment.set('user_id', pm.response.json().response.id);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const ts = Date.now();\r",
+                      " \r",
+                      "pm.environment.set('username', 'user_' + ts);\r",
+                      "pm.environment.set('email', 'user_' + ts + '@test.com');\r",
+                      "pm.environment.set('phone', '09' + ts.toString().slice(-8));\r",
+                      "\r",
+                      ""
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -57,7 +84,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"username\": \"nghoangtrungg\",\r\n    \"firstName\": \"Trung\",\r\n    \"lastName\": \"Nguyen\",\r\n    \"email\": \"trunghnguyen123@gmail.com\",\r\n    \"password\": \"htrung\",\r\n    \"phone\": \"0935890195\",\r\n    \"userStatus\": 1\r\n}",
+                  "raw": "{\r\n    \"username\": \"{{username}}\",\r\n    \"firstName\": \"Trung\",\r\n    \"lastName\": \"Nguyen\",\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"phone\": \"{{phone}}\",\r\n    \"userStatus\": 1\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -94,6 +121,17 @@
                       "    pm.expect(errors).to.include(\"username\");",
                       "    pm.expect(errors).to.include(\"required\");",
                       "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -162,6 +200,17 @@
                     "packages": {},
                     "requests": {}
                   }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
               ],
               "request": {
@@ -217,6 +266,17 @@
                       "    pm.expect(errors).to.include(\"password\");",
                       "    pm.expect(errors).to.include(\"invalid\");",
                       "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -282,6 +342,18 @@
                     "packages": {},
                     "requests": {}
                   }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const ts = Date.now();",
+                      "pm.environment.set(\"dup_email\", \"dup_\" + ts + \"@test.com\");"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
               ],
               "request": {
@@ -300,7 +372,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"username\": \"trunghnguyen\",\r\n    \"firstName\": \"Trung\",\r\n    \"lastName\": \"Nguyen\",\r\n    \"email\": \"trung@email.com\",\r\n    \"password\": \"htrung\",\r\n    \"phone\": \"0935890195\",\r\n    \"userStatus\": 1\r\n}",
+                  "raw": "{\n    \"username\": \"{{username}}\",\n    \"firstName\": \"Trung\",\n    \"lastName\": \"Nguyen\",\n    \"email\": \"{{dup_email}}\",\n    \"password\": \"htrung\",\n    \"phone\": \"0935890195\",\n    \"userStatus\": 1\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -337,6 +409,17 @@
                       "    pm.expect(errors).to.include(\"firstName\");",
                       "    pm.expect(errors).to.include(\"required\");",
                       "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -402,6 +485,17 @@
                     "packages": {},
                     "requests": {}
                   }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
               ],
               "request": {
@@ -457,6 +551,17 @@
                       "    pm.expect(errors).to.include(\"userStatus\");",
                       "    pm.expect(errors).to.include(\"required\");",
                       "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -522,6 +627,18 @@
                     "packages": {},
                     "requests": {}
                   }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const ts = Date.now();",
+                      "pm.environment.set(\"dup_username\", \"dup_\" + ts);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
               ],
               "request": {
@@ -535,7 +652,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"username\": \"trunghnguyenn\",\r\n    \"firstName\": \"Trung\",\r\n    \"lastName\": \"Nguyen\",\r\n    \"email\": \"trunghnguyen1234@gmail.com\",\r\n    \"password\": \"htrung\",\r\n    \"phone\": \"0935890195\",\r\n    \"userStatus\": 1\r\n}",
+                  "raw": "{\n    \"username\": \"{{dup_username}}\",\n    \"firstName\": \"Trung\",\n    \"lastName\": \"Nguyen\",\n    \"email\": \"{{email}}\",\n    \"password\": \"htrung\",\n    \"phone\": \"0935890195\",\n    \"userStatus\": 1\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -572,6 +689,17 @@
                       "    pm.expect(errors).to.include(\"email\");",
                       "    pm.expect(errors).to.include(\"valid\");",
                       "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -627,6 +755,17 @@
                       "    pm.expect(errors).to.include(\"phone\");",
                       "    pm.expect(errors).to.include(\"invalid\");",
                       "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -695,6 +834,17 @@
                     "packages": {},
                     "requests": {}
                   }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
               ],
               "request": {
@@ -743,11 +893,16 @@
                       "pm.test(\"Status code is 200\", function () {",
                       "    pm.response.to.have.status(200);",
                       "});",
-                      " ",
-                      "pm.test(\"Token is present and saved\", function () {",
+                      "",
+                      "pm.test(\"Token is present, is a string, and is saved\", function () {",
                       "    var json = pm.response.json();",
                       "    pm.expect(json.token).to.be.a(\"string\").and.not.empty;",
                       "    pm.environment.set(\"token\", json.token);",
+                      "});",
+                      "",
+                      "pm.test(\"Response structure is valid (has token key at root)\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json).to.have.property(\"token\");",
                       "});"
                     ],
                     "type": "text/javascript",
@@ -761,7 +916,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"username\": \"trunghnguyen\",\n    \"password\": \"htrung\"\n}",
+                  "raw": "{\n    \"username\": \"{{username}}\",\n    \"password\": \"{{password}}\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -890,7 +1045,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"username\": \"trunghnguyen\",\n  \"password\": \"htrungg\"\n}",
+                  "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"htrung_wrong\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -966,7 +1121,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"username\": \"nghoangtrung\",\n  \"password\": \"\"\n}",
+                  "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1095,7 +1250,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"username\": \"wronguser\",\n  \"password\": \"wrongpass\"\n}",
+                  "raw": "{\n  \"username\": \"{{username}}_wrong\",\n  \"password\": \"htrung_wrong\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1263,7 +1418,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"username\": \"nghoangtrungg\",\n  \"password\": \"htrungg\"\n}",
+                  "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"htrung_wrong\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1299,19 +1454,54 @@
                   "listen": "test",
                   "script": {
                     "exec": [
-                      "pm.test(\"Status code is 200\", function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});\r",
-                      " \r",
-                      "pm.test(\"Response message is correct\", function () {\r",
-                      "    var json = pm.response.json();\r",
-                      "    pm.expect(json.message).to.eql(\"Success\");\r",
-                      "});\r",
-                      " \r",
-                      "pm.test(\"Response array is not empty\", function () {\r",
-                      "    var json = pm.response.json();\r",
-                      "    pm.expect(json.response).to.be.an(\"array\").and.not.empty;\r",
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Response message is Success\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.message).to.eql(\"Success\");",
+                      "});",
+                      "",
+                      "pm.test(\"Response array has 2 users\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.response).to.be.an(\"array\").with.lengthOf(2);",
+                      "});",
+                      "",
+                      "pm.test(\"First user matches input: username, email\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var u1 = json.response[0];",
+                      "    pm.expect(u1.username).to.eql(pm.environment.get(\"username\"));",
+                      "    pm.expect(u1.email).to.eql(pm.environment.get(\"email\"));",
+                      "    pm.expect(u1.userStatus).to.eql(1);",
+                      "});",
+                      "",
+                      "pm.test(\"Second user matches input: username2, email2\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var u2 = json.response[1];",
+                      "    pm.expect(u2.username).to.eql(pm.environment.get(\"username2\"));",
+                      "    pm.expect(u2.email).to.eql(pm.environment.get(\"email2\"));",
+                      "    pm.expect(u2.userStatus).to.eql(1);",
                       "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const ts = Date.now();\r",
+                      " \r",
+                      "pm.environment.set('username','user_' + ts);\r",
+                      "pm.environment.set('email','user_' + ts + '@test.com');\r",
+                      "pm.environment.set('phone','09' + ts.toString().slice(-8));\r",
+                      " \r",
+                      "pm.environment.set('username2','user2_' + ts);\r",
+                      "pm.environment.set('email2','user2_' + ts + '@test.com');\r",
+                      "pm.environment.set('phone2','08' + ts.toString().slice(-8));"
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -1340,7 +1530,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "[\r\n    {\r\n        \"username\": \"JJames\",\r\n        \"firstName\": \"John\",\r\n        \"lastName\": \"James\",\r\n        \"email\": \"jjames@email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": 1\r\n    },\r\n        {\r\n        \"username\": \"BWhite\",\r\n        \"firstName\": \"Ben\",\r\n        \"lastName\": \"White\",\r\n        \"email\": \"benwhite@email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": 1\r\n    }\r\n]",
+                  "raw": "[\r\n    {\r\n        \"username\": \"{{username}}\",\r\n        \"firstName\": \"John\",\r\n        \"lastName\": \"James\",\r\n        \"email\": \"{{email}}\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"{{phone}}\",\r\n        \"userStatus\": 1\r\n    },\r\n    {\r\n        \"username\": \"{{username2}}\",\r\n        \"firstName\": \"Ben\",\r\n        \"lastName\": \"White\",\r\n        \"email\": \"{{email2}}\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"{{phone2}}\",\r\n        \"userStatus\": 1\r\n    }\r\n]",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1573,6 +1763,18 @@
                     "packages": {},
                     "requests": {}
                   }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const ts = Date.now();",
+                      "pm.environment.set(\"dup_array_email\", \"dup_arr_\" + ts + \"@test.com\");"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
               ],
               "request": {
@@ -1596,7 +1798,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "[\r\n    {\r\n        \"username\": \"trunghnguyen\",\r\n        \"firstName\": \"Trung\",\r\n        \"lastName\": \"Nguyen\",\r\n        \"email\": \"trung@email.com\",\r\n        \"password\": \"Demo@123\",\r\n        \"phone\": \"0912345678\",\r\n        \"userStatus\": 1\r\n    }\r\n]",
+                  "raw": "[\n    {\n        \"username\": \"{{username}}\",\n        \"firstName\": \"Trung\",\n        \"lastName\": \"Nguyen\",\n        \"email\": \"{{dup_array_email}}\",\n        \"password\": \"Demo@123\",\n        \"phone\": \"0912345678\",\n        \"userStatus\": 1\n    }\n]",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2078,19 +2280,43 @@
                   "listen": "test",
                   "script": {
                     "exec": [
-                      "pm.test(\"Status code is 200\", function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});\r",
-                      " \r",
-                      "pm.test(\"Response message is correct\", function () {\r",
-                      "    var json = pm.response.json();\r",
-                      "    pm.expect(json.message).to.eql(\"Success\");\r",
-                      "});\r",
-                      " \r",
-                      "pm.test(\"Response contains updated username\", function () {\r",
-                      "    var json = pm.response.json();\r",
-                      "    pm.expect(json.response.username).to.be.a(\"string\").and.not.empty;\r",
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Response message is Success\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.message).to.eql(\"Success\");",
+                      "});",
+                      "",
+                      "pm.test(\"Response echoes back updated user's information\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.response.username).to.eql(pm.environment.get(\"username\"));",
+                      "    pm.expect(json.response.email).to.eql(pm.environment.get(\"email\"));",
+                      "",
+                      "    pm.expect(json.response.firstName).to.eql(\"Kai\");",
+                      "    pm.expect(json.response.lastName).to.eql(\"Havertz\");",
+                      "});",
+                      "",
+                      "pm.test(\"Response id matches the user being updated\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.response.id).to.eql(Number(pm.environment.get(\"user_id\")));",
                       "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const ts = Date.now();\r",
+                      " \r",
+                      "pm.environment.set('username', 'user_' + ts);\r",
+                      "pm.environment.set('email',    'user_' + ts + '@test.com');\r",
+                      "pm.environment.set('phone',    '09' + ts.toString().slice(-8));"
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -2119,7 +2345,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"username\": \"Ka1\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"kaihaverzt@email.com\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
+                  "raw": "{\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"{{phone}}\",\r\n  \"userStatus\": 1\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2127,18 +2353,18 @@
                   }
                 },
                 "url": {
-                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "raw": "{{base_url}}/{{user_path}}/:id",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
-                    "{{user_path }}",
+                    "{{user_path}}",
                     ":id"
                   ],
                   "variable": [
                     {
                       "key": "id",
-                      "value": "25324"
+                      "value": "{{user_id}}"
                     }
                   ]
                 }
@@ -2167,6 +2393,20 @@
                     "packages": {},
                     "requests": {}
                   }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const ts = Date.now();\r",
+                      " \r",
+                      "pm.environment.set('username', 'user_' + ts);\r",
+                      "pm.environment.set('email',    'user_' + ts + '@test.com');"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
               ],
               "request": {
@@ -2190,7 +2430,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"username\": \"\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"kai@email.com\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
+                  "raw": "{\r\n  \"username\": \"\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2198,12 +2438,12 @@
                   }
                 },
                 "url": {
-                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "raw": "{{base_url}}/{{user_path}}/:id",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
-                    "{{user_path }}",
+                    "{{user_path}}",
                     ":id"
                   ],
                   "variable": [
@@ -2238,6 +2478,20 @@
                     "packages": {},
                     "requests": {}
                   }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const ts = Date.now();\r",
+                      " \r",
+                      "pm.environment.set('username', 'user_' + ts);\r",
+                      "pm.environment.set('email',    'user_' + ts + '@test.com');"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
               ],
               "request": {
@@ -2261,7 +2515,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"username\": \"kai123\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
+                  "raw": "{\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2269,12 +2523,12 @@
                   }
                 },
                 "url": {
-                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "raw": "{{base_url}}/{{user_path}}/:id",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
-                    "{{user_path }}",
+                    "{{user_path}}",
                     ":id"
                   ],
                   "variable": [
@@ -2309,6 +2563,20 @@
                     "packages": {},
                     "requests": {}
                   }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const ts = Date.now();\r",
+                      " \r",
+                      "pm.environment.set('username', 'user_' + ts);\r",
+                      "pm.environment.set('email',    'user_' + ts + '@test.com');"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
               ],
               "request": {
@@ -2332,7 +2600,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"username\": \"kai123\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"kai@email.com\",\r\n  \"password\": \"\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
+                  "raw": "{\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2340,12 +2608,12 @@
                   }
                 },
                 "url": {
-                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "raw": "{{base_url}}/{{user_path}}/:id",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
-                    "{{user_path }}",
+                    "{{user_path}}",
                     ":id"
                   ],
                   "variable": [
@@ -2411,12 +2679,12 @@
                   }
                 },
                 "url": {
-                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "raw": "{{base_url}}/{{user_path}}/:id",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
-                    "{{user_path }}",
+                    "{{user_path}}",
                     ":id"
                   ],
                   "variable": [
@@ -2451,6 +2719,20 @@
                     "packages": {},
                     "requests": {}
                   }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const ts = Date.now();\r",
+                      " \r",
+                      "pm.environment.set('username', 'user_' + ts);\r",
+                      "pm.environment.set('email',    'user_' + ts + '@test.com');"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
               ],
               "request": {
@@ -2474,7 +2756,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"username\": \"kai123\",\r\n  \"firstName\": \"\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"kai@email.com\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
+                  "raw": "{\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2482,12 +2764,12 @@
                   }
                 },
                 "url": {
-                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "raw": "{{base_url}}/{{user_path}}/:id",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
-                    "{{user_path }}",
+                    "{{user_path}}",
                     ":id"
                   ],
                   "variable": [
@@ -2522,6 +2804,20 @@
                     "packages": {},
                     "requests": {}
                   }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const ts = Date.now();\r",
+                      " \r",
+                      "pm.environment.set('username', 'user_' + ts);\r",
+                      "pm.environment.set('email',    'user_' + ts + '@test.com');"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
               ],
               "request": {
@@ -2545,7 +2841,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"username\": \"kai123\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"\",\r\n  \"email\": \"kai@email.com\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
+                  "raw": "{\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": 1\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2553,12 +2849,12 @@
                   }
                 },
                 "url": {
-                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "raw": "{{base_url}}/{{user_path}}/:id",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
-                    "{{user_path }}",
+                    "{{user_path}}",
                     ":id"
                   ],
                   "variable": [
@@ -2593,6 +2889,20 @@
                     "packages": {},
                     "requests": {}
                   }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const ts = Date.now();\r",
+                      " \r",
+                      "pm.environment.set('username', 'user_' + ts);\r",
+                      "pm.environment.set('email',    'user_' + ts + '@test.com');"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
               ],
               "request": {
@@ -2616,7 +2926,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"username\": \"kai123\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"kai@email.com\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": \"\"\r\n}",
+                  "raw": "{\r\n  \"username\": \"{{username}}\",\r\n  \"firstName\": \"Kai\",\r\n  \"lastName\": \"Havertz\",\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"Demo@123\",\r\n  \"phone\": \"0912345678\",\r\n  \"userStatus\": \"\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -2624,12 +2934,12 @@
                   }
                 },
                 "url": {
-                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "raw": "{{base_url}}/{{user_path}}/:id",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
-                    "{{user_path }}",
+                    "{{user_path}}",
                     ":id"
                   ],
                   "variable": [
@@ -2695,12 +3005,12 @@
                   }
                 },
                 "url": {
-                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "raw": "{{base_url}}/{{user_path}}/:id",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
-                    "{{user_path }}",
+                    "{{user_path}}",
                     ":id"
                   ],
                   "variable": [
@@ -2766,12 +3076,12 @@
                   }
                 },
                 "url": {
-                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "raw": "{{base_url}}/{{user_path}}/:id",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
-                    "{{user_path }}",
+                    "{{user_path}}",
                     ":id"
                   ],
                   "variable": [
@@ -2837,12 +3147,12 @@
                   }
                 },
                 "url": {
-                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "raw": "{{base_url}}/{{user_path}}/:id",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
-                    "{{user_path }}",
+                    "{{user_path}}",
                     ":id"
                   ],
                   "variable": [
@@ -2911,18 +3221,290 @@
                   }
                 },
                 "url": {
-                  "raw": "{{base_url}}/{{user_path }}/:id",
+                  "raw": "{{base_url}}/{{user_path}}/:id",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
-                    "{{user_path }}",
+                    "{{user_path}}",
                     ":id"
                   ],
                   "variable": [
                     {
                       "key": "id",
                       "value": "{{user_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Category",
+      "item": [
+        {
+          "name": "Get All Category",
+          "item": [
+            {
+              "name": "Get All Categories - Happy Path",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Response message is Success\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.message).to.eql(\"Success\");",
+                      "});",
+                      "",
+                      "pm.test(\"Response is a non-empty array\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.response).to.be.an(\"array\").and.not.empty;",
+                      "});",
+                      "",
+                      "pm.test(\"Each category item has id and name fields\", function () {",
+                      "    var json = pm.response.json();",
+                      "    json.response.forEach(function(cat) {",
+                      "        pm.expect(cat).to.have.property(\"id\");",
+                      "        pm.expect(cat).to.have.property(\"name\");",
+                      "        pm.expect(cat.id).to.be.a(\"number\");",
+                      "        pm.expect(cat.name).to.be.a(\"string\").and.not.empty;",
+                      "    });",
+                      "});",
+                      "",
+                      "// Save category IDs",
+                      "var json = pm.response.json();",
+                      "var categories = json.response;",
+                      "",
+                      "if (categories && categories.length >= 2) {",
+                      "    var index1 = Math.floor(Math.random() * categories.length);",
+                      "    pm.environment.set(\"category_id\", categories[index1].id);",
+                      "    ",
+                      "    var index2;",
+                      "    do {",
+                      "        index2 = Math.floor(Math.random() * categories.length);",
+                      "    } while (index1 === index2);",
+                      "    ",
+                      "    pm.environment.set(\"delete_category_id\", categories[index2].id);",
+                      "} ",
+                      "// For case categories less than 2",
+                      "// else if (categories && categories.length > 0) {",
+                      "//     pm.environment.set(\"category_id\", categories[0].id);",
+                      "//     pm.environment.set(\"delete_category_id\", categories[0].id);",
+                      "// }"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/categorys",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "categorys"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Delete Category",
+          "item": [
+            {
+              "name": "Delete Category - Happy Path",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response message is correct\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json).to.have.property(\"message\");\r",
+                      "    pm.expect(json.message).to.eql(\"Success\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response id matches the category being deleted\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.response.id).to.eql(Number(pm.environment.get(\"delete_category_id\")));\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/{{category_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{category_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{delete_category_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Category - Invalid Token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response message is Unauthenticated\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.message).to.eql(\"Unauthenticated.\");\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response has message field\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json).to.have.property(\"message\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "12600|uGAkwDOGQNxhsXx4kj0wdOAVAsAfi9i4txfK6K",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/{{category_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{category_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{delete_category_id}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Category - ID not exits",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response message is Not found\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json.message).to.eql(\"Not found\");\r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Response has message field\", function () {\r",
+                      "    var json = pm.response.json();\r",
+                      "    pm.expect(json).to.have.property(\"message\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/{{category_path}}/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "{{category_path}}",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "10000"
                     }
                   ]
                 }
@@ -2946,19 +3528,42 @@
                   "listen": "test",
                   "script": {
                     "exec": [
-                      "pm.test(\"Status code is 200\", function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});\r",
-                      " \r",
-                      "pm.test(\"Response message is correct\", function () {\r",
-                      "    var json = pm.response.json();\r",
-                      "    pm.expect(json.message).to.eql(\"Success\");\r",
-                      "});\r",
-                      " \r",
-                      "pm.test(\"Response contains book id\", function () {\r",
-                      "    var json = pm.response.json();\r",
-                      "    pm.expect(json.response.id).to.be.a(\"number\");\r",
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Response message is Success\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.message).to.eql(\"Success\");",
+                      "});",
+                      "",
+                      "pm.test(\"Response echoes back book information\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var b = json.response;",
+                      "    pm.expect(b.name).to.eql(pm.environment.get(\"book_name\"));",
+                      "    pm.expect(b.category_id).to.eql(Number(pm.environment.get(\"category_id\")));",
+                      "    pm.expect(b.status).to.eql(true);",
+                      "    pm.expect(b.price).to.be.a(\"number\");",
+                      "});",
+                      "",
+                      "pm.test(\"Response contains book id and it is a number\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.response.id).to.be.a(\"number\");",
+                      "    pm.environment.set(\"book_id\", json.response.id);",
                       "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const ts = Date.now();\r",
+                      " \r",
+                      "pm.environment.set('book_name', 'name_' + ts);"
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -2987,7 +3592,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Introduction to Testing v1.0\",\r\n    \"category_id\": 375,\r\n    \"price\": 25000,\r\n    \"release_date\": \"2026/06/10\",\r\n    \"image_ids\": [\r\n        16,\r\n        17\r\n    ],\r\n    \"status\": true\r\n}",
+                  "raw": "{\r\n    \"name\": \"{{book_name}}\",\r\n    \"category_id\": {{category_id}},\r\n    \"price\": 25000,\r\n    \"release_date\": \"2026/06/10\",\r\n    \"image_ids\": [\r\n        16,\r\n        17\r\n    ],\r\n    \"status\": true\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3147,19 +3752,43 @@
                   "listen": "test",
                   "script": {
                     "exec": [
-                      "pm.test(\"Status code is 200\", function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});\r",
-                      " \r",
-                      "pm.test(\"Response message is correct\", function () {\r",
-                      "    var json = pm.response.json();\r",
-                      "    pm.expect(json.message).to.eql(\"Success\");\r",
-                      "});\r",
-                      " \r",
-                      "pm.test(\"Response contains updated name\", function () {\r",
-                      "    var json = pm.response.json();\r",
-                      "    pm.expect(json.response.name).to.be.a(\"string\").and.not.empty;\r",
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Response message is Success\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.message).to.eql(\"Success\");",
+                      "});",
+                      "",
+                      "pm.test(\"Response echoes back updated name\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.response.name).to.eql(pm.environment.get(\"book_name\"));",
+                      "});",
+                      "",
+                      "pm.test(\"Response id matches the book being updated\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.response.id).to.eql(Number(pm.environment.get(\"book_id\")));",
+                      "});",
+                      "",
+                      "pm.test(\"Updated price and status are correct\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.response.price).to.eql(1200);",
+                      "    pm.expect(json.response.status).to.eql(true);",
                       "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const ts = Date.now();",
+                      " ",
+                      "pm.environment.set('book_name', 'name_' + ts);"
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -3188,7 +3817,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Tester v1.100\",\r\n    \"category_id\": 350,\r\n    \"price\": 1200,\r\n    \"release_date\": \"2023/12/29\",\r\n    \"image_ids\": [\r\n        12,\r\n        13\r\n    ],\r\n    \"status\": true\r\n}",
+                  "raw": "{\n    \"name\": \"{{book_name}}\",\n    \"category_id\": {{category_id}},\n    \"price\": 1200,\n    \"release_date\": \"2023/12/29\",\n    \"image_ids\": [\n        12,\n        13\n    ],\n    \"status\": true\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3236,6 +3865,17 @@
                     "packages": {},
                     "requests": {}
                   }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
                 }
               ],
               "request": {
@@ -3259,7 +3899,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"\",\r\n    \"category_id\": 350,\r\n    \"price\": 1200,\r\n    \"release_date\": \"2023/12/29\",\r\n    \"image_ids\": [\r\n        12,\r\n        13\r\n    ],\r\n    \"status\": true\r\n}",
+                  "raw": "{\r\n    \"name\": \"\",\r\n    \"category_id\": \"{{category_id}}\",\r\n    \"price\": 1200,\r\n    \"release_date\": \"2023/12/29\",\r\n    \"image_ids\": [\r\n        12,\r\n        13\r\n    ],\r\n    \"status\": true\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3330,7 +3970,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Tester v1.100\",\r\n    \"category_id\": 350,\r\n    \"price\": \"\",\r\n    \"release_date\": \"2023/12/29\",\r\n    \"image_ids\": [\r\n        12,\r\n        13\r\n    ],\r\n    \"status\": true\r\n}",
+                  "raw": "{\r\n    \"name\": \"Tester v1.100\",\r\n    \"category_id\": \"{{category_id}}\",\r\n    \"price\": \"\",\r\n    \"release_date\": \"2023/12/29\",\r\n    \"image_ids\": [\r\n        12,\r\n        13\r\n    ],\r\n    \"status\": true\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3401,7 +4041,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Tester v1.100\",\r\n    \"category_id\": 350,\r\n    \"price\": 1200,\r\n    \"release_date\": \"\",\r\n    \"image_ids\": [\r\n        12,\r\n        13\r\n    ],\r\n    \"status\": true\r\n}",
+                  "raw": "{\r\n    \"name\": \"Tester v1.100\",\r\n    \"category_id\": \"{{category_id}}\",\r\n    \"price\": 1200,\r\n    \"release_date\": \"\",\r\n    \"image_ids\": [\r\n        12,\r\n        13\r\n    ],\r\n    \"status\": true\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3472,7 +4112,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Tester v1.100\",\r\n    \"category_id\": 350,\r\n    \"price\": 1200,\r\n    \"release_date\": \"2023/12/29\",\r\n    \"image_ids\": [\r\n        12,\r\n        13\r\n    ],\r\n    \"status\": \"\"\r\n}",
+                  "raw": "{\r\n    \"name\": \"Tester v1.100\",\r\n    \"category_id\": \"{{category_id}}\",\r\n    \"price\": 1200,\r\n    \"release_date\": \"2023/12/29\",\r\n    \"image_ids\": [\r\n        12,\r\n        13\r\n    ],\r\n    \"status\": \"\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3614,7 +4254,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Tester v1.100\",\r\n    \"category_id\": 350,\r\n    \"price\": 1200,\r\n    \"release_date\": \"2023/12/29\",\r\n    \"image_ids\": [],\r\n    \"status\": true\r\n}",
+                  "raw": "{\r\n    \"name\": \"Tester v1.100\",\r\n    \"category_id\": \"{{category_id}}\",\r\n    \"price\": 1200,\r\n    \"release_date\": \"2023/12/29\",\r\n    \"image_ids\": [],\r\n    \"status\": true\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3756,7 +4396,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Tester v1.100\",\r\n    \"category_id\": 350,\r\n    \"price\": 1200,\r\n    \"release_date\": \"2023/12/29\",\r\n    \"image_ids\": [\r\n        14\r\n    ],\r\n    \"status\": true\r\n}",
+                  "raw": "{\r\n    \"name\": \"Tester v1.100\",\r\n    \"category_id\": \"{{category_id}}\",\r\n    \"price\": 1200,\r\n    \"release_date\": \"2023/12/29\",\r\n    \"image_ids\": [\r\n        14\r\n    ],\r\n    \"status\": true\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -3794,18 +4434,28 @@
                   "listen": "test",
                   "script": {
                     "exec": [
-                      "pm.test(\"Status code is 200\", function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});\r",
-                      " \r",
-                      "pm.test(\"Response message is correct\", function () {\r",
-                      "    var json = pm.response.json();\r",
-                      "    pm.expect(json.message).to.eql(\"Success\");\r",
-                      "});\r",
-                      " \r",
-                      "pm.test(\"Response contains book id\", function () {\r",
-                      "    var json = pm.response.json();\r",
-                      "    pm.expect(json.response.id).to.be.a(\"number\");\r",
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Response message is Success\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.message).to.eql(\"Success\");",
+                      "});",
+                      "",
+                      "pm.test(\"Response id matches requested book_id\", function () {",
+                      "    var json = pm.response.json();",
+                      "    pm.expect(json.response.id).to.eql(Number(pm.environment.get(\"book_id\")));",
+                      "});",
+                      "",
+                      "pm.test(\"Response book has required fields: name, price, status, category_id\", function () {",
+                      "    var json = pm.response.json();",
+                      "    var b = json.response;",
+                      "    pm.expect(b).to.have.property(\"name\");",
+                      "    pm.expect(b).to.have.property(\"price\");",
+                      "    pm.expect(b).to.have.property(\"status\");",
+                      "    pm.expect(b).to.have.property(\"category_id\");",
+                      "    pm.expect(b.name).to.be.a(\"string\").and.not.empty;",
                       "});"
                     ],
                     "type": "text/javascript",
@@ -3816,7 +4466,13 @@
               ],
               "request": {
                 "method": "GET",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
                 "url": {
                   "raw": "{{base_url}}/{{book_path}}/:id",
                   "host": [
@@ -3829,7 +4485,7 @@
                   "variable": [
                     {
                       "key": "id",
-                      "value": "1328"
+                      "value": "{{book_id}}"
                     }
                   ]
                 }
@@ -3890,253 +4546,13 @@
       ]
     },
     {
-      "name": "Category",
-      "item": [
-        {
-          "name": "Get All Category",
-          "item": [
-            {
-              "name": "Get All Categories - Happy Path",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"Status code is 200\", function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});\r",
-                      " \r",
-                      "pm.test(\"Response message is correct\", function () {\r",
-                      "    var json = pm.response.json();\r",
-                      "    pm.expect(json.message).to.eql(\"Success\");\r",
-                      "});\r",
-                      " \r",
-                      "pm.test(\"Response is an array\", function () {\r",
-                      "    var json = pm.response.json();\r",
-                      "    pm.expect(json.response).to.be.an(\"array\");\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/categorys",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "categorys"
-                  ]
-                }
-              },
-              "response": []
-            }
-          ]
-        },
-        {
-          "name": "Delete Category",
-          "item": [
-            {
-              "name": "Delete Category - Happy Path",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"Status code is 200\", function () {\r",
-                      "    pm.response.to.have.status(200);\r",
-                      "});\r",
-                      " \r",
-                      "pm.test(\"Response message is correct\", function () {\r",
-                      "    var json = pm.response.json();\r",
-                      "    pm.expect(json.message).to.eql(\"Success\");\r",
-                      "});\r",
-                      " \r",
-                      "pm.test(\"Response has message field\", function () {\r",
-                      "    var json = pm.response.json();\r",
-                      "    pm.expect(json).to.have.property(\"message\");\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "DELETE",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/{{category_path}}/:id",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "{{category_path}}",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "{{category_id}}"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Delete Category - Invalid Token",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"Status code is 401\", function () {\r",
-                      "    pm.response.to.have.status(401);\r",
-                      "});\r",
-                      " \r",
-                      "pm.test(\"Response message is Unauthenticated\", function () {\r",
-                      "    var json = pm.response.json();\r",
-                      "    pm.expect(json.message).to.eql(\"Unauthenticated.\");\r",
-                      "});\r",
-                      " \r",
-                      "pm.test(\"Response has message field\", function () {\r",
-                      "    var json = pm.response.json();\r",
-                      "    pm.expect(json).to.have.property(\"message\");\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "12600|uGAkwDOGQNxhsXx4kj0wdOAVAsAfi9i4txfK6K",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "DELETE",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "application/json",
-                    "type": "text"
-                  }
-                ],
-                "url": {
-                  "raw": "{{base_url}}/{{category_path}}/:id",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "{{category_path}}",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "{{category_id}}"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Delete Category - ID not exits",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"Status code is 400\", function () {\r",
-                      "    pm.response.to.have.status(400);\r",
-                      "});\r",
-                      " \r",
-                      "pm.test(\"Response message is Not found\", function () {\r",
-                      "    var json = pm.response.json();\r",
-                      "    pm.expect(json.message).to.eql(\"Not found\");\r",
-                      "});\r",
-                      " \r",
-                      "pm.test(\"Response has message field\", function () {\r",
-                      "    var json = pm.response.json();\r",
-                      "    pm.expect(json).to.have.property(\"message\");\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{token}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "DELETE",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/{{category_path}}/:id",
-                  "host": [
-                    "{{base_url}}"
-                  ],
-                  "path": [
-                    "{{category_path}}",
-                    ":id"
-                  ],
-                  "variable": [
-                    {
-                      "key": "id",
-                      "value": "10000"
-                    }
-                  ]
-                }
-              },
-              "response": []
-            }
-          ]
-        }
-      ]
-    },
-    {
       "name": "Image",
       "item": [
         {
           "name": "Update Image",
           "item": [
             {
-              "name": "Update Image- Happy Path",
+              "name": "Update Image - Happy Path",
               "event": [
                 {
                   "listen": "test",
@@ -4154,6 +4570,7 @@
                       "pm.test(\"Response contains image id\", function () {\r",
                       "    var json = pm.response.json();\r",
                       "    pm.expect(json.response.id).to.be.a(\"number\");\r",
+                      "    pm.expect(json.response.id).to.eql(Number(pm.environment.get(\"image_id\")));\r",
                       "});"
                     ],
                     "type": "text/javascript",
@@ -4193,7 +4610,7 @@
                       "key": "image",
                       "type": "file",
                       "uuid": "99696c5a-4275-480b-83a7-fc9e0dd12ce7",
-                      "src": "postman-cloud:///1f164973-c29f-4ce0-814c-1d5899a6577a"
+                      "src": "/C:/Users/trunghnguyen/Downloads/pexels-abror-alarice-2157079562-35922308 (1).jpg"
                     }
                   ]
                 },
@@ -4217,7 +4634,7 @@
               "response": []
             },
             {
-              "name": "Update Image- Missing Image",
+              "name": "Update Image - Missing Image",
               "event": [
                 {
                   "listen": "test",
@@ -4263,13 +4680,15 @@
                   }
                 ],
                 "body": {
-                  "mode": "raw",
-                  "raw": "{}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "db50c7fb-4091-481a-8973-2c07bc38608b",
+                      "value": null
                     }
-                  }
+                  ]
                 },
                 "url": {
                   "raw": "{{base_url}}/{{image_path}}/:id",
@@ -4291,7 +4710,7 @@
               "response": []
             },
             {
-              "name": "Update Image- Invalid Token",
+              "name": "Update Image - Invalid Token",
               "event": [
                 {
                   "listen": "test",
@@ -4336,6 +4755,17 @@
                     "type": "text"
                   }
                 ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "b824b3c7-cb28-4da8-b11b-89bac6b1161d",
+                      "src": "/C:/Users/trunghnguyen/Downloads/pexels-abror-alarice-2157079562-35922308 (1).jpg"
+                    }
+                  ]
+                },
                 "url": {
                   "raw": "{{base_url}}/{{image_path}}/:id",
                   "host": [
@@ -4356,7 +4786,7 @@
               "response": []
             },
             {
-              "name": "Update Image- Missing Token",
+              "name": "Update Image - Missing Token",
               "event": [
                 {
                   "listen": "test",
@@ -4402,8 +4832,15 @@
                   }
                 ],
                 "body": {
-                  "mode": "file",
-                  "file": {}
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "uuid": "6c153f9e-fd19-4daa-be27-ea861dbd45f3",
+                      "src": "/C:/Users/trunghnguyen/Downloads/pexels-abror-alarice-2157079562-35922308 (1).jpg"
+                    }
+                  ]
                 },
                 "url": {
                   "raw": "{{base_url}}/{{image_path}}/:id",
