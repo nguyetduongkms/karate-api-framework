@@ -33,7 +33,7 @@ Feature: Get Book By Id Helper
   # Validate required input from caller
     * match bookId == '#number'
 
-    Given path '/api/book/' + bookId
+    Given path 'api', 'book', bookId
     When method GET
     Then status 200
 

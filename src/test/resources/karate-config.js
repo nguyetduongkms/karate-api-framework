@@ -102,7 +102,7 @@ function fn() {
     config.generateUsername= function() { return 'user_' + Math.floor(Math.random() * 100000); };
     config.generateEmail   = function(username) { return username + '@anhtester.com'; };
     config.generateBookName = function() { return 'book_' + Math.floor(Math.random() * 100000); };
-    config.generateBookPrice = function() { return Math.floor(Math.random() * 100); };
+    config.generateBookPrice = function() { return Math.floor(Math.random() * 100) + 1; };
 
     // ----------------------------------------------------------------
     // [7] RETURN CONFIG — Karate injects this into every Scenario context

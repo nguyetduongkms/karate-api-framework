@@ -9,7 +9,7 @@
 #   Get all categories and return the first valid category_id.
 #
 # Called by other features via:
-#   * def categoryResult = call read('classpath:features/categories/helpers/get-first-category.feature')
+#   * def categoryResult = call read('classpath:features/category/helpers/get-first-category.feature')
 #
 # Returns:
 #   categoryResult.category_id
@@ -53,5 +53,5 @@ Feature: Get First Category Helper
     * assert category.name.length > 0
 
   # Expose clean values to caller
-    * def category_id = category.id
+    * def categoryId = category.id
     * def getCategoriesResponse = response

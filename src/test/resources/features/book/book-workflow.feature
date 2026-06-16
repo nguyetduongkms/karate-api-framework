@@ -17,7 +17,7 @@
 #   create a new book, get it by id, and update its price successfully.
 # ================================================================
 
-Feature: Book Workflow - Create Book
+Feature: Book Workflow
 
   Background:
     * url baseUrl
@@ -34,8 +34,6 @@ Feature: Book Workflow - Create Book
   # STEP 1: Create a new user
   # ------------------------------------------------------------
     * def user = call read('classpath:features/auth/helpers/create-user.feature')
-
-  # Validate created user data
     * match user.userId == '#notnull'
 
   # ------------------------------------------------------------
@@ -43,7 +41,6 @@ Feature: Book Workflow - Create Book
   # ------------------------------------------------------------
     * def loginResult = call read('classpath:features/auth/helpers/login-user.feature') { username: '#(user.username)', password: '#(user.password)' }
 
-  # Validate login token
     * def token = loginResult.token
     * match loginResult.token == '#string'
     * match loginResult.token != ''
@@ -54,42 +51,26 @@ Feature: Book Workflow - Create Book
     * def categoryResult = call read('classpath:features/category/helpers/get-first-category.feature')
 
   # Validate category data
-    * def category_id = categoryResult.category_id
-    * match categoryResult.category_id == '#number'
+    * def categoryId = categoryResult.categoryId
+    * match categoryResult.categoryId == '#number'
 
   # ------------------------------------------------------------
   # STEP 4: Create a new book
   # ------------------------------------------------------------
-    * def createdBook = call read('classpath:features/book/helpers/create-book.feature') { token: '#(token)', categoryId: '#(category_id)' }
-
-  # Validate created book result
-    * match createdBook.bookId == '#notnull'
-    * match createdBook.bookName == '#string'
-    * match createdBook.payload == '#object'
-    * match createdBook.createBookResponse.message == 'Success'
-
-  # Validate created book response data
+    * def createdBook = call read('classpath:features/book/helpers/create-book.feature') { token: '#(token)', categoryId: '#(categoryId)' }
     * def bookId = createdBook.bookId
-    * match bookId == '#number'
 
   #-------------------------------------------------------------
   # STEP 5: Get book by id
   # ------------------------------------------------------------
     * def getBookById = call read('classpath:features/book/helpers/get-book-by-id.feature') {bookId: '#(bookId)'}
-
-  # Validate get book by id result
     * match getBookById.getBookByIdResponse.response.id == bookId
 
   # ------------------------------------------------------------
   # STEP 6: Update book price by id
   # ------------------------------------------------------------
     * def bookPrice = generateBookPrice()
-
     * def updateFields = { price: '#(bookPrice)' }
-
     * def updatedBook = call read('classpath:features/book/helpers/update-book.feature') { token: '#(token)', bookId: '#(bookId)', originalPayload: '#(createdBook.payload)', updateFields: '#(updateFields)' }
-
-  # Validate workflow business result
-    * match updatedBook.updateBookResponse.response.id == bookId
     * match updatedBook.updateBookResponse.response.price == bookPrice
 

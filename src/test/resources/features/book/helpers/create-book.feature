@@ -9,7 +9,7 @@
 #   Create a new book using a valid Authorization token.
 #
 # Called by other features via:
-#   * def createdBook = call read('classpath:features/books/helpers/create-book.feature') { token: '#(token)', category_id: '#(category_id)' }
+#   * def createdBook = call read('classpath:features/book/helpers/create-book.feature') { token: '#(token)', category_id: '#(category_id)' }
 #
 # Required input from caller:
 #   token       — valid access token from Login API
