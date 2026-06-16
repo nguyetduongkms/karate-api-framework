@@ -21,9 +21,9 @@ Feature: Create a new user (reusable helper)
     * configure headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' }
 
     # Generate a unique ID so the registered username never conflicts
-    * def username = "user_" + Java.type('java.lang.System').currentTimeMillis()
-    * def email = username + "@anhtester.com"
-    * def payload  = read('classpath:templates/auth/register-request.json')
+    * def username = generateUsername()
+    * def email = generateEmail(username)
+    * def payload = read('classpath:templates/auth/register-request.json')
 
     Given path '/api/register'
     And   request payload
@@ -31,6 +31,7 @@ Feature: Create a new user (reusable helper)
     Then  status 200
     And match response.message == 'Success'
     And match response.response.username == payload.username
+    And match response.response.username == "#string"
     And match response.response.firstName == payload.firstName
     And match response.response.lastName == payload.lastName
     And match response.response.email == payload.email
@@ -38,3 +39,6 @@ Feature: Create a new user (reusable helper)
     And match response.response.userStatus == payload.userStatus
     And match response.response.id == '#notnull'
 
+    * def username = response.response.username
+    * def userId = response.response.id
+    * def password = payload.password

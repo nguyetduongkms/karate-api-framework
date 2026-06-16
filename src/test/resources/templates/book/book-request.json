@@ -1,0 +1,8 @@
+{
+  "name": "#(bookName)",
+  "category_id": "#(categoryId)",
+  "price": "#(bookPrice)",
+  "release_date": "#(releaseDate)",
+  "image_ids": ["#(categoryId)"],
+  "status": true
+}

@@ -4,6 +4,7 @@
 # Endpoint : POST https://api.anhtester.com/api/login
 # Author   : NguyetDuong
 # Version  : 1.0.0
+# ================================================================
 
 Feature: Login and verify Access Token
   Purpose: Ensure the Login API returns a valid token for use with other APIs.
