@@ -49,6 +49,7 @@ Feature: Get Book By Id Helper
     And match response.response.release_date == '#string'
     And match response.response.status == '#number'
     And match response.response.image == '#array'
+    And match each response.response.image == { id: '#number', path: '#string' }
 
   # Expose clean values to caller
     * def bookId = response.response.id

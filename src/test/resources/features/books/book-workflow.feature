@@ -19,10 +19,6 @@
 
 Feature: Book Workflow
 
-  Background:
-    * url baseUrl
-    * configure headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' }
-
 # ================================================================
 # SCENARIO 1: SUCCESSFUL BOOK WORKFLOW
 # ================================================================
@@ -42,13 +38,13 @@ Feature: Book Workflow
     * def loginResult = call read('classpath:features/auth/helpers/login-user.feature') { username: '#(user.username)', password: '#(user.password)' }
 
     * def token = loginResult.token
-    * match loginResult.token == '#string'
-    * match loginResult.token != ''
+    * match token == '#string'
+    * match token != ''
 
   # ------------------------------------------------------------
   # STEP 3: Get a valid category ID
   # ------------------------------------------------------------
-    * def categoryResult = call read('classpath:features/category/helpers/get-first-category.feature')
+    * def categoryResult = call read('classpath:features/categories/helpers/get-first-category.feature')
 
   # Validate category data
     * def categoryId = categoryResult.categoryId
@@ -57,13 +53,13 @@ Feature: Book Workflow
   # ------------------------------------------------------------
   # STEP 4: Create a new book
   # ------------------------------------------------------------
-    * def createdBook = call read('classpath:features/book/helpers/create-book.feature') { token: '#(token)', categoryId: '#(categoryId)' }
+    * def createdBook = call read('classpath:features/books/helpers/create-book.feature') { token: '#(token)', categoryId: '#(categoryId)' }
     * def bookId = createdBook.bookId
 
   #-------------------------------------------------------------
   # STEP 5: Get book by id
   # ------------------------------------------------------------
-    * def getBookById = call read('classpath:features/book/helpers/get-book-by-id.feature') {bookId: '#(bookId)'}
+    * def getBookById = call read('classpath:features/books/helpers/get-book-by-id.feature') {bookId: '#(bookId)'}
     * match getBookById.getBookByIdResponse.response.id == bookId
 
   # ------------------------------------------------------------
@@ -71,6 +67,6 @@ Feature: Book Workflow
   # ------------------------------------------------------------
     * def bookPrice = generateBookPrice()
     * def updateFields = { price: '#(bookPrice)' }
-    * def updatedBook = call read('classpath:features/book/helpers/update-book.feature') { token: '#(token)', bookId: '#(bookId)', originalPayload: '#(createdBook.payload)', updateFields: '#(updateFields)' }
+    * def updatedBook = call read('classpath:features/books/helpers/update-book.feature') { token: '#(token)', bookId: '#(bookId)', originalPayload: '#(createdBook.payload)', updateFields: '#(updateFields)' }
     * match updatedBook.updateBookResponse.response.price == bookPrice
 

@@ -36,7 +36,7 @@ public class TestRunner {
         // [STEP 2] START KARATE PARALLEL RUNNER
         // ----------------------------------------------------------------
         Results results = Runner
-                .path("classpath:features")
+                .path("classpath:features/users")
                 .outputCucumberJson(true)   // ← QUAN TRỌNG
                 .parallel(4);
 
