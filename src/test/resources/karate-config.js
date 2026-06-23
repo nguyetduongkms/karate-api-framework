@@ -97,12 +97,8 @@ function fn() {
     // ----------------------------------------------------------------
     // [6] HELPER FUNCTIONS — available in all feature files
     // ----------------------------------------------------------------
-    config.timestamp       = function() { return new Date().getTime(); };
-    config.generateDate = function () {return new Date().toLocaleDateString()}
-    config.generateUsername= function() {return 'user_' + Math.floor(Math.random() * 100000);};
-    config.generateEmail   = function(username) { return username + '@anhtester.com'; };
-    config.generateBookName = function() { return 'book_' + Math.floor(Math.random() * 100000); };
-    config.generateBookPrice = function() { return Math.floor(Math.random() * 100) + 1; };
+    var utils = karate.read('classpath:utils/data-generators.js');
+    Object.assign(config, utils);
 
     // ----------------------------------------------------------------
     // [7] RETURN CONFIG — Karate injects this into every Scenario context

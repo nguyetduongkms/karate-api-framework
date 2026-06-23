@@ -9,18 +9,11 @@
 #   Create a dynamic user, login with that user, and expose auth data
 #   for feature files that need an authenticated request.
 #
-# Called by:
-#   * def auth = call read('classpath:features/auth/helpers/auth.feature')
-#
 # Returns:
-#   auth.token
-#   auth.userId
-#   auth.user
-#   auth.loginResponse
+#   token, userId
 # ================================================================
 @ignore
 Feature: Auth helper
-
   Scenario: Register a dynamic user and login
     * def user = call read('classpath:features/auth/helpers/create-user.feature')
     * def login = call read('classpath:features/auth/helpers/login-user.feature') { username: '#(user.username)', password: '#(user.password)' }

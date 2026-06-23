@@ -8,14 +8,13 @@
 #   Verify that the API returns at least one valid category.
 # ================================================================
 Feature: Categories API
-
   Background:
     * url baseUrl
 
   @smoke @categories @happy-path
   Scenario: Get all categories
     Given path 'api', 'categorys'
-    When method get
+    When method GET
     Then status 200
     And match response contains { message: 'Success', response: '#array' }
     And assert response.response.length > 0

@@ -1,20 +1,14 @@
 # ================================================================
-# FEATURE: BOOK API - CREATE BOOK NEGATIVE TESTS
+# FEATURE: BOOK API - CREATE BOOK TESTS
 # ================================================================
 # Endpoint:
 #   POST /api/book
 #
 # Purpose:
-#   Verify that the create book endpoint rejects unauthorized
-#   requests (invalid or missing token).
-#
-# Test data:
-#   Authentication, category IDs, book names, prices, and dates
-#   are created or generated at runtime. No fixed resource
-#   identifiers or account credentials are used.
+#   Verify book creation behavior under authorized,
+#   unauthorized, and missing token scenarios.
 # ================================================================
-Feature: Create book negative validation
-
+Feature: Create book validation
   Background:
     * url baseUrl
     * def bookName = generateBookName()
@@ -27,7 +21,7 @@ Feature: Create book negative validation
     * def payload = read('classpath:templates/book/book-request.json')
 
   @books @create-book @happy-path
-  Scenario: Create a book with an invalid token
+  Scenario: Create a book successfully
     * def auth = call read('classpath:features/auth/helpers/auth.feature')
     * header Authorization = 'Bearer ' + auth.token
     Given path 'api', 'book'
@@ -38,7 +32,7 @@ Feature: Create book negative validation
     And match response.response contains
       """
       {
-        id: '#? _ > 0',
+        id: '#number? _ > 0',
         name: '#(payload.name)',
         category_id: '#(payload.category_id)',
         price: '#(payload.price)',
@@ -47,7 +41,7 @@ Feature: Create book negative validation
         image: '#array'
       }
       """
-    And match each response.response.image == { id: '#? _ > 0', path: '#regex public/images/[A-Za-z0-9]+\\.(jpg|jpeg|png|gif|webp)' }
+    And match each response.response.image == { id: '#number? _ > 0 ', path: '#regex public/images/[A-Za-z0-9]+\\.(jpg|jpeg|png|gif|webp)' }
 
   @books @create-book @negative
   Scenario: Create a book with an invalid token

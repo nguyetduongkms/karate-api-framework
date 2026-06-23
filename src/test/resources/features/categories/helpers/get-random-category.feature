@@ -17,7 +17,7 @@ Feature: Get a random available category
 
   Scenario: Get random available category
     Given path 'api', 'categorys'
-    When method get
+    When method GET
     Then status 200
     And match response contains { message: 'Success', response: '#array' }
     And assert response.response.length > 0

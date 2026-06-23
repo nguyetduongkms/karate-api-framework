@@ -12,7 +12,6 @@
 # ================================================================
 @ignore
 Feature: Create user helper
-
   Scenario: Register a unique user
     * url baseUrl
     * def username = generateUsername()
@@ -22,13 +21,13 @@ Feature: Create user helper
 
     Given path 'api', 'register'
     And request payload
-    When method post
+    When method POST
     Then status 200
     And match response contains { message: 'Success', response: '#object' }
     And match response.response contains
       """
       {
-        id: '#number',
+        id: '#number? _ > 0',
         username: '#(payload.username)',
         firstName: '#(payload.firstName)',
         lastName: '#(payload.lastName)',

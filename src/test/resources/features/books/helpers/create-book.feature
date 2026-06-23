@@ -11,7 +11,7 @@
 #   token, categoryId
 #
 # Returns:
-#   bookId, payload, createBookResponse
+#   bookId, payload
 # ================================================================
 @ignore
 Feature: Create book helper
@@ -31,13 +31,13 @@ Feature: Create book helper
 
     Given path 'api', 'book'
     And request payload
-    When method post
+    When method POST
     Then status 200
     And match response contains { message: 'Success', response: '#object' }
     And match response.response contains
       """
       {
-        id: '#? _ > 0',
+        id: '#number? _ > 0',
         name: '#(payload.name)',
         category_id: '#(payload.category_id)',
         price: '#(payload.price)',
@@ -46,7 +46,7 @@ Feature: Create book helper
         image: '#array'
       }
       """
-    And match each response.response.image == { id: '#? _ > 0', path: '#regex public/images/[A-Za-z0-9]+\\.(jpg|jpeg|png|gif|webp)' }
+    And match each response.response.image == { id: '#number? _ > 0 ', path: '#regex public/images/[A-Za-z0-9]+\\.(jpg|jpeg|png|gif|webp)' }
 
     * def bookId = response.response.id
     * def payload = payload

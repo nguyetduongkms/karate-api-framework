@@ -14,7 +14,6 @@
 #   and update its price.
 # ================================================================
 Feature: Book workflow
-
   @smoke @books @happy-path
   Scenario: Create, read, and update a book as an authenticated user
     # Create a dynamic user and get a valid access token.

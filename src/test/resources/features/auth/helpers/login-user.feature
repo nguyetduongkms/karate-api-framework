@@ -15,14 +15,13 @@
 # ================================================================
 @ignore
 Feature: Login user helper
-
   Background:
     * url baseUrl
 
   Scenario: Login with valid credentials
     Given path 'api', 'login'
     And request { username: '#(username)', password: '#(password)' }
-    When method post
+    When method POST
     Then status 200
     And match response.token == '#regex \\d+\\|[A-Za-z0-9]{40,}'
 

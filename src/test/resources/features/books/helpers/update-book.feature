@@ -15,7 +15,6 @@
 # ================================================================
 @ignore
 Feature: Update book helper
-
   Background:
     * url baseUrl
 
@@ -39,7 +38,7 @@ Feature: Update book helper
 
     Given path 'api', 'book', bookId
     And request payload
-    When method put
+    When method PUT
     Then status 200
     And match response contains { message: 'Success', response: '#object' }
     And match response.response contains
@@ -54,7 +53,7 @@ Feature: Update book helper
         image: '#array'
       }
       """
-    And match each response.response.image == { id: '#? _ > 0', path: '#regex public/images/[A-Za-z0-9]+\\.(jpg|jpeg|png|gif|webp)' }
+    And match each response.response.image == { id: '#number? _ > 0 ', path: '#regex public/images/[A-Za-z0-9]+\\.(jpg|jpeg|png|gif|webp)' }
 
     * def updatedPayload = payload
     * def updateBookResponse = response

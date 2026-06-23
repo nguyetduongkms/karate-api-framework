@@ -11,14 +11,12 @@
 #   data-driven examples.
 # ================================================================
 Feature: Users API
-
   Background:
     * url baseUrl
     * def auth = call read('classpath:features/auth/helpers/auth.feature')
 
   @smoke @users @happy-path
-  Scenario Outline: Create users from array payload
-    # Build one array payload from the current example row.
+  Scenario Outline: Create users from array
     * header Authorization = 'Bearer ' + auth.token
     * def username = generateUsername()
     * def email = generateEmail(username)
@@ -30,7 +28,7 @@ Feature: Users API
 
     Given path 'api', 'users'
     And request payload
-    When method post
+    When method POST
     Then status 200
     And match response contains { message: 'Success', response: '#array' }
     And match response.response contains

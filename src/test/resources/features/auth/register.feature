@@ -10,7 +10,6 @@
 #   invalid user data with exact message and response.
 # ================================================================
 Feature: Register API
-
   Background:
     * url baseUrl
     * def username = generateUsername()
@@ -21,13 +20,13 @@ Feature: Register API
   Scenario: Register a dynamic user successfully
     Given path 'api', 'register'
     And request payload
-    When method post
+    When method POST
     Then status 200
     And match response contains { message: 'Success', response: '#object' }
     And match response.response contains
       """
       {
-        id: '#number',
+        id: '#number? _ > 0',
         username: '#(payload.username)',
         firstName: '#(payload.firstName)',
         lastName: '#(payload.lastName)',
@@ -42,7 +41,7 @@ Feature: Register API
     * set payload.username = ''
     Given path 'api', 'register'
     And request payload
-    When method post
+    When method POST
     Then status 422
     And match response.message == 'The username field is required.'
 
@@ -51,7 +50,7 @@ Feature: Register API
     * set payload.email = ''
     Given path 'api', 'register'
     And request payload
-    When method post
+    When method POST
     Then status 422
     And match response.message == 'The email field is required.'
 
@@ -60,7 +59,7 @@ Feature: Register API
     * set payload.password = ''
     Given path 'api', 'register'
     And request payload
-    When method post
+    When method POST
     Then status 422
     And match response.message == 'The password field format is invalid.'
 
@@ -69,7 +68,7 @@ Feature: Register API
     * set payload.username = existingUser.username
     Given path 'api', 'register'
     And request payload
-    When method post
+    When method POST
     Then status 422
     And match response.message == 'The username has already been taken.'
 
@@ -78,7 +77,7 @@ Feature: Register API
     * set payload.firstName = ''
     Given path 'api', 'register'
     And request payload
-    When method post
+    When method POST
     Then status 422
     And match response.message == 'The first name field is required.'
 
@@ -87,7 +86,7 @@ Feature: Register API
     * set payload.lastName = ''
     Given path 'api', 'register'
     And request payload
-    When method post
+    When method POST
     Then status 422
     And match response.message == 'The last name field is required.'
 
@@ -96,7 +95,7 @@ Feature: Register API
     * set payload.userStatus = ''
     Given path 'api', 'register'
     And request payload
-    When method post
+    When method POST
     Then status 422
     And match response.message == 'The user status field is required.'
 
@@ -105,7 +104,7 @@ Feature: Register API
     * set payload.email = existingUser.email
     Given path 'api', 'register'
     And request payload
-    When method post
+    When method POST
     Then status 422
     And match response.message == 'The email has already been taken.'
 
@@ -114,7 +113,7 @@ Feature: Register API
     * set payload.email = 'invalid-email'
     Given path 'api', 'register'
     And request payload
-    When method post
+    When method POST
     Then status 422
     And match response.message == 'The email field must be a valid email address.'
 
@@ -123,7 +122,7 @@ Feature: Register API
     * set payload.phone = null
     Given path 'api', 'register'
     And request payload
-    When method post
+    When method POST
     Then status 422
     And match response.message == 'The phone field format is invalid.'
 
@@ -132,6 +131,6 @@ Feature: Register API
     * remove payload.phone
     Given path 'api', 'register'
     And request payload
-    When method post
+    When method POST
     Then status 500
     And match response.message == 'Server Error'
