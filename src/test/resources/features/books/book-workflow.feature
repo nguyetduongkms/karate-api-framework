@@ -6,67 +6,33 @@
 #   POST /api/login
 #   GET  /api/categorys
 #   POST /api/book
-#   GET /api/book/{id}
-#   PUT /api/book/{id}
-#
-# Author  : TrungNguyen
-# Version : 1.0.0
+#   GET  /api/book/{id}
+#   PUT  /api/book/{id}
 #
 # Purpose:
-#   Verify that a user can register, login, get a valid category,
-#   create a new book, get it by id, and update its price successfully.
+#   Verify that an authenticated user can create a book, retrieve it,
+#   and update its price.
 # ================================================================
-
-Feature: Book Workflow
-
-# ================================================================
-# SCENARIO 1: SUCCESSFUL BOOK WORKFLOW
-# ================================================================
+Feature: Book workflow
 
   @smoke @books @happy-path
-  Scenario: Successful book workflow after register, login, get category, create book, get book by id and update its price
+  Scenario: Create, read, and update a book as an authenticated user
+    # Create a dynamic user and get a valid access token.
+    * def auth = call read('classpath:features/auth/helpers/auth.feature')
 
-  # ------------------------------------------------------------
-  # STEP 1: Create a new user
-  # ------------------------------------------------------------
-    * def user = call read('classpath:features/auth/helpers/create-user.feature')
-    * match user.userId == '#notnull'
-
-  # ------------------------------------------------------------
-  # STEP 2: Login with the created user
-  # ------------------------------------------------------------
-    * def loginResult = call read('classpath:features/auth/helpers/login-user.feature') { username: '#(user.username)', password: '#(user.password)' }
-
-    * def token = loginResult.token
-    * match token == '#string'
-    * match token != ''
-
-  # ------------------------------------------------------------
-  # STEP 3: Get a valid category ID
-  # ------------------------------------------------------------
-    * def categoryResult = call read('classpath:features/categories/helpers/get-first-category.feature')
-
-  # Validate category data
+    # Pick an existing category for the new book.
+    * def categoryResult = call read('classpath:features/categories/helpers/get-random-category.feature')
     * def categoryId = categoryResult.categoryId
-    * match categoryResult.categoryId == '#number'
 
-  # ------------------------------------------------------------
-  # STEP 4: Create a new book
-  # ------------------------------------------------------------
-    * def createdBook = call read('classpath:features/books/helpers/create-book.feature') { token: '#(token)', categoryId: '#(categoryId)' }
+    # Create the book, then verify it can be retrieved by id.
+    * def createdBook = call read('classpath:features/books/helpers/create-book.feature') { token: '#(auth.token)', categoryId: '#(categoryId)' }
     * def bookId = createdBook.bookId
 
-  #-------------------------------------------------------------
-  # STEP 5: Get book by id
-  # ------------------------------------------------------------
-    * def getBookById = call read('classpath:features/books/helpers/get-book-by-id.feature') {bookId: '#(bookId)'}
-    * match getBookById.getBookByIdResponse.response.id == bookId
+    * def foundBook = call read('classpath:features/books/helpers/get-book-by-id.feature') { bookId: '#(bookId)' }
+    * match foundBook.getBookByIdResponse.response.id == bookId
 
-  # ------------------------------------------------------------
-  # STEP 6: Update book price by id
-  # ------------------------------------------------------------
+    # Update only the price while keeping the original payload intact.
     * def bookPrice = generateBookPrice()
     * def updateFields = { price: '#(bookPrice)' }
-    * def updatedBook = call read('classpath:features/books/helpers/update-book.feature') { token: '#(token)', bookId: '#(bookId)', originalPayload: '#(createdBook.payload)', updateFields: '#(updateFields)' }
+    * def updatedBook = call read('classpath:features/books/helpers/update-book.feature') { token: '#(auth.token)', bookId: '#(bookId)', originalPayload: '#(createdBook.payload)', updateFields: '#(updateFields)' }
     * match updatedBook.updateBookResponse.response.price == bookPrice
-

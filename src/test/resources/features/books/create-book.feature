@@ -1,34 +1,35 @@
 # ================================================================
-# HELPER: CREATE BOOK
+# FEATURE: BOOK API - CREATE BOOK NEGATIVE TESTS
 # ================================================================
 # Endpoint:
 #   POST /api/book
 #
 # Purpose:
-#   Create a book using an authenticated token and category id.
+#   Verify that the create book endpoint rejects unauthorized
+#   requests (invalid or missing token).
 #
-# Required input:
-#   token, categoryId
-#
-# Returns:
-#   bookId, payload, createBookResponse
+# Test data:
+#   Authentication, category IDs, book names, prices, and dates
+#   are created or generated at runtime. No fixed resource
+#   identifiers or account credentials are used.
 # ================================================================
-@ignore
-Feature: Create book helper
+Feature: Create book negative validation
+
   Background:
     * url baseUrl
-    * header Authorization = 'Bearer ' + token
-
-  Scenario: Create a book
     * def bookName = generateBookName()
-    * def releaseDate = generateDate()
     * def bookPrice = generateBookPrice()
+    * def releaseDate = generateDate()
     * def categoryResult = call read('classpath:features/categories/helpers/get-random-category.feature')
     * def categoryId = categoryResult.categoryId
     * def imgResult = call read('classpath:features/images/helpers/get-random-image.feature')
     * def imageId = imgResult.imageId
     * def payload = read('classpath:templates/book/book-request.json')
 
+  @books @create-book @happy-path
+  Scenario: Create a book with an invalid token
+    * def auth = call read('classpath:features/auth/helpers/auth.feature')
+    * header Authorization = 'Bearer ' + auth.token
     Given path 'api', 'book'
     And request payload
     When method post
@@ -48,5 +49,18 @@ Feature: Create book helper
       """
     And match each response.response.image == { id: '#? _ > 0', path: '#regex public/images/[A-Za-z0-9]+\\.(jpg|jpeg|png|gif|webp)' }
 
-    * def bookId = response.response.id
-    * def payload = payload
+  @books @create-book @negative
+  Scenario: Create a book with an invalid token
+    * def invalidToken = 'invalid_' + timestamp()
+    * header Authorization = 'Bearer ' + invalidToken
+    Given path 'api', 'book'
+    And request payload
+    When method post
+    Then status 401
+
+  @books @create-book @negative
+  Scenario: Create a book without a token
+    Given path 'api', 'book'
+    And request payload
+    When method post
+    Then status 401

@@ -1,56 +1,29 @@
 # ================================================================
-# HELPER: LOGIN USER API
+# HELPER: LOGIN USER
 # ================================================================
-# Endpoint : POST /api/login
-# Author   : TrungNguyen
-# Version  : 1.0.0
+# Endpoint:
+#   POST /api/login
 #
 # Purpose:
-#   Login with a valid username and password, then return the access token.
+#   Login with a supplied username and password.
 #
-# Called by other features via:
-#   * def loginResult = call read('classpath:features/auth/helpers/login-user.feature') { username: '#(user.username)', password: '#(user.password)' }
-#
-# Required input from caller:
-#   username — valid registered username
-#   password — valid password for that username
+# Required input:
+#   username, password
 #
 # Returns:
-#   loginResult.token
-#   loginResult.loginResponse
-#
-# @ignore prevents this helper from running as a standalone test.
+#   token, loginResponse
 # ================================================================
-
 @ignore
-Feature: Login User Helper
+Feature: Login user helper
 
   Background:
     * url baseUrl
-    * configure headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' }
 
-  Scenario: Login with valid username and password
-  # Validate required input from caller
-    * match username == '#string'
-    * match password == '#string'
-    * assert username.length > 0
-    * assert password.length > 0
-
-    Given path '/api/login'
-    And request
-  """
-  {
-    "username": "#(username)",
-    "password": "#(password)"
-  }
-  """
-    When method POST
+  Scenario: Login with valid credentials
+    Given path 'api', 'login'
+    And request { username: '#(username)', password: '#(password)' }
+    When method post
     Then status 200
+    And match response.token == '#regex \\d+\\|[A-Za-z0-9]{40,}'
 
-  # Validate response
-    And match response.token == '#string'
-    And match response.token != ''
-
-  # Expose clean values to caller
     * def token = response.token
-    * def loginResponse = response

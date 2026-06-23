@@ -1,44 +1,42 @@
 # ================================================================
-# HELPER: CREATE USER (Reusable callable feature)
+# HELPER: CREATE USER
 # ================================================================
-# Called by other features via:
-#   * def user = call read('classpath:features/auth/helpers/create-user.feature')
+# Endpoint:
+#   POST /api/register
 #
-# Returns (available on the caller's result object):
-#   user.username  — the registered username
-#   user.password  — the password used during registration
-#   user.email     — the registered email
-#   user.userId    — the assigned user ID from the server
+# Purpose:
+#   Register a unique user for tests that need fresh credentials.
 #
-# @ignore prevents this from running as a standalone test.
+# Returns:
+#   username, password
 # ================================================================
 @ignore
-Feature: Create a new user (reusable helper)
+Feature: Create user helper
 
-  Scenario: Register a unique user and expose credentials to the caller
-
+  Scenario: Register a unique user
     * url baseUrl
-    * configure headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' }
-
-    # Generate a unique ID so the registered username never conflicts
     * def username = generateUsername()
     * def email = generateEmail(username)
     * def payload = read('classpath:templates/auth/register-request.json')
+    * set payload.userStatus = karate.get('userStatus', 1)
 
-    Given path '/api/register'
-    And   request payload
-    When  method POST
-    Then  status 200
-    And match response.message == 'Success'
-    And match response.response.username == payload.username
-    And match response.response.username == "#string"
-    And match response.response.firstName == payload.firstName
-    And match response.response.lastName == payload.lastName
-    And match response.response.email == payload.email
-    And match response.response.phone == payload.phone
-    And match response.response.userStatus == payload.userStatus
-    And match response.response.id == '#notnull'
+    Given path 'api', 'register'
+    And request payload
+    When method post
+    Then status 200
+    And match response contains { message: 'Success', response: '#object' }
+    And match response.response contains
+      """
+      {
+        id: '#number',
+        username: '#(payload.username)',
+        firstName: '#(payload.firstName)',
+        lastName: '#(payload.lastName)',
+        email: '#(payload.email)',
+        phone: '#(payload.phone)',
+        userStatus: '#(payload.userStatus)'
+      }
+      """
 
     * def username = response.response.username
-    * def userId = response.response.id
     * def password = payload.password

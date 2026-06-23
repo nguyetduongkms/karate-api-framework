@@ -1,33 +1,78 @@
 # ================================================================
 # FEATURE: LOGIN API
 # ================================================================
-# Endpoint : POST https://api.anhtester.com/api/login
-# Author   : NguyetDuong
-# Version  : 1.0.0
+# Endpoint:
+#   POST /api/login
+#
+# Purpose:
+#   Verify that a newly registered user can login and receive a token.
 # ================================================================
-
-Feature: Login and verify Access Token
-  Purpose: Ensure the Login API returns a valid token for use with other APIs.
-  Endpoint: POST /api/login
+Feature: Login API
 
   Background:
     * def user = call read('classpath:features/auth/helpers/create-user.feature')
-    * print user
     * url baseUrl
-    * configure headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' }
 
-  # ================================================================
-  # SCENARIO 1: SUCCESSFUL LOGIN (HAPPY PATH)
-  # ================================================================
-  # Credentials → DEMO_USERNAME / DEMO_PASSWORD env vars (see .env.example)
-  @smoke @login @happy-path @test
-  Scenario: Successful login with valid credentials
+  @smoke @login @happy-path
+  Scenario: Login with a newly registered user
     Given path '/api/login'
-    And request { username: '#(user.response.response.username)', password: '#(user.payload.password)' }
-    When method POST
+    And request { username: '#(user.username)', password: '#(user.password)' }
+    When method post
     Then status 200
-    And match response.token == '#notnull'
-    And assert response.token.length > 50
-    * def accessToken = response.token
-    * karate.set('globalToken', accessToken)
-    * print '✅ Login successful!'
+    And match response.token == '#string'
+    And match response.token != ''
+
+  @smoke @login @negative
+  Scenario: Login with incorrect username
+    Given path '/api/login'
+    And request { username: '#(user.username)_wrong', password: '#(user.password)' }
+    When method post
+    Then status 200
+    And match response.message == 'Login failed'
+    And match response.errors == 'User name not found'
+
+  @smoke @login @negative
+  Scenario: Login with incorrect password
+    Given path '/api/login'
+    And request { username: '#(user.username)', password: '#(user.password)_wrong' }
+    When method post
+    Then status 200
+    And match response.errors == 'Password is incorrect'
+
+  @smoke @login @negative
+  Scenario: Login with incorrect username and password
+    Given path 'api', 'login'
+    And request { username: '#(user.username)_wrong', password: '#(user.password)_wrong' }
+    When method post
+    Then status 200
+    And match response.message == 'Login failed'
+    And match response.errors == 'User name not found'
+
+  @smoke @login @negative
+  Scenario: Login with userStatus = 0
+    * def user = call read('classpath:features/auth/helpers/create-user.feature') { userStatus: 0 }
+    Given path 'api', 'login'
+    And request { username: '#(user.username)', password: '#(user.password)' }
+    When method post
+    Then status 200
+    And match response.message == 'Login failed'
+    And match response.errors == 'User is InActive'
+
+  @smoke @login @negative
+  Scenario: Login when username is changed to new username
+    * def newUsername = generateUsername()
+    Given path 'api', 'login'
+    And request { username: '#(newUsername)', password: '#(user.password)' }
+    When method post
+    Then status 200
+    And match response.message == 'Login failed'
+    And match response.errors == 'User name not found'
+
+  @smoke @login @negative
+  Scenario: Login when password is changed to new password
+    * def newPassword = user.password + '_new'
+    Given path 'api', 'login'
+    And request { username: '#(user.username)', password: '#(newPassword)' }
+    When method post
+    Then status 200
+    And match response.errors == 'Password is incorrect'

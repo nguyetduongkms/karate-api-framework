@@ -1,19 +1,21 @@
 # ================================================================
-# FEATURE: CATEGORIES API
+# HELPER: GET RANDOM CATEGORY
 # ================================================================
 # Endpoint:
 #   GET /api/categorys
 #
 # Purpose:
-#   Verify that the API returns at least one valid category.
+#   Read categories and expose random valid category id.
+#
+# Returns:
+#   categoryId
 # ================================================================
-Feature: Categories API
-
+@ignore
+Feature: Get a random available category
   Background:
     * url baseUrl
 
-  @smoke @categories @happy-path
-  Scenario: Get all categories
+  Scenario: Get random available category
     Given path 'api', 'categorys'
     When method get
     Then status 200
@@ -21,4 +23,7 @@ Feature: Categories API
     And assert response.response.length > 0
     And match each response.response == { id: '#number', name: '#string' }
 
-    * def categories = response.response
+    * def randomIndex = Math.floor(Math.random() * response.response.length)
+    * def category = response.response[randomIndex]
+
+    * def categoryId = category.id
