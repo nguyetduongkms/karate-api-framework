@@ -11,7 +11,7 @@
 Feature: Get book validation
   Background:
     * url baseUrl
-    * def auth = call read('classpath:features/auth/helpers/auth.feature')
+    * def auth = call read('classpath:features/auth/helpers/login-user.feature')
     * def createdBook = call read('classpath:features/books/helpers/create-book.feature') {token: '#(auth.token)'}
     * def bookId = createdBook.bookId
 
@@ -20,7 +20,8 @@ Feature: Get book validation
     Given path 'api', 'book', bookId
     When method GET
     Then status 200
-    And match response contains { message: 'Success', response: '#object' }
+    And match response.message == 'Success'
+    And match response.response == '#object'
     And match response.response contains
       """
       {

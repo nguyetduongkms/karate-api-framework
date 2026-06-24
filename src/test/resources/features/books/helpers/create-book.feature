@@ -8,7 +8,7 @@
 #   Create a book using an authenticated token and category id.
 #
 # Required input:
-#   token, categoryId
+#   token
 #
 # Returns:
 #   bookId, payload
@@ -33,7 +33,8 @@ Feature: Create book helper
     And request payload
     When method POST
     Then status 200
-    And match response contains { message: 'Success', response: '#object' }
+    And match response.message == 'Success'
+    And match response.response == '#object'
     And match response.response contains
       """
       {

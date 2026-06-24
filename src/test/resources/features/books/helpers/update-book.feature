@@ -23,7 +23,6 @@ Feature: Update book helper
     * match bookId == '#number'
     * match originalPayload == '#object'
     * match updateFields == '#object'
-
     * header Authorization = 'Bearer ' + token
     * def mergePayload =
       """
@@ -35,7 +34,6 @@ Feature: Update book helper
       }
       """
     * def payload = mergePayload(originalPayload, updateFields)
-
     Given path 'api', 'book', bookId
     And request payload
     When method PUT
@@ -54,6 +52,5 @@ Feature: Update book helper
       }
       """
     And match each response.response.image == { id: '#number? _ > 0 ', path: '#regex public/images/[A-Za-z0-9]+\\.(jpg|jpeg|png|gif|webp)' }
-
     * def updatedPayload = payload
     * def updateBookResponse = response

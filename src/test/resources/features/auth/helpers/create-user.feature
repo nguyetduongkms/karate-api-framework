@@ -23,7 +23,8 @@ Feature: Create user helper
     And request payload
     When method POST
     Then status 200
-    And match response contains { message: 'Success', response: '#object' }
+    And match response.message == 'Success'
+    And match response.response == '#object'
     And match response.response contains
       """
       {
@@ -36,6 +37,5 @@ Feature: Create user helper
         userStatus: '#(payload.userStatus)'
       }
       """
-
     * def username = response.response.username
     * def password = payload.password

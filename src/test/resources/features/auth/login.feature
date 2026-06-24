@@ -9,8 +9,8 @@
 # ================================================================
 Feature: Login API
   Background:
-    * def user = call read('classpath:features/auth/helpers/create-user.feature')
     * url baseUrl
+    * def user = call read('classpath:features/auth/helpers/create-user.feature')
 
   @smoke @login @happy-path
   Scenario: Login with a newly registered user
@@ -21,31 +21,19 @@ Feature: Login API
     And match response.token == '#regex \\d+\\|[A-Za-z0-9]{40,}'
 
   @smoke @login @negative
-  Scenario: Login with incorrect username
+  Scenario Outline: Login fails with invalid credentials
     Given path 'api', 'login'
-    And request { username: '#(user.username)_wrong', password: '#(user.password)' }
+    And request { username: '<username>', password: '<password>' }
     When method POST
     Then status 200
     And match response.message == 'Login failed'
-    And match response.errors == 'User name not found'
+    And match response.errors == '<expectedError>'
 
-  @smoke @login @negative
-  Scenario: Login with incorrect password
-    Given path 'api', 'login'
-    And request { username: '#(user.username)', password: '#(user.password)_wrong' }
-    When method POST
-    Then status 200
-    And match response.message == 'Login failed'
-    And match response.errors == 'Password is incorrect'
-
-  @smoke @login @negative
-  Scenario: Login with incorrect username and password
-    Given path 'api', 'login'
-    And request { username: '#(user.username)_wrong', password: '#(user.password)_wrong' }
-    When method POST
-    Then status 200
-    And match response.message == 'Login failed'
-    And match response.errors == 'User name not found'
+    Examples:
+      | username               | password               | expectedError         |
+      | #(user.username)_wrong | #(user.password)       | User name not found   |
+      | #(user.username)       | #(user.password)_wrong | Password is incorrect |
+      | #(user.username)_wrong | #(user.password)_wrong | User name not found   |
 
   @smoke @login @negative
   Scenario: Login with userStatus = 0

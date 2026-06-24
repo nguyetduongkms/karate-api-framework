@@ -19,12 +19,11 @@ Feature: Get book by id helper
     * url baseUrl
 
   Scenario: Get a book by id
-    * match bookId == '#number'
-
     Given path 'api', 'book', bookId
     When method GET
     Then status 200
-    And match response contains { message: 'Success', response: '#object' }
+    And match response.message == 'Success'
+    And match response.response == '#object'
     And match response.response contains
       """
       {

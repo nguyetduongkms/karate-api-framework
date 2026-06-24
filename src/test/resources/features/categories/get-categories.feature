@@ -16,7 +16,8 @@ Feature: Categories API
     Given path 'api', 'categorys'
     When method GET
     Then status 200
-    And match response contains { message: 'Success', response: '#array' }
+    And match response.message == 'Success'
+    And match response.response == '#array'
     And assert response.response.length > 0
     And match each response.response == { id: '#number', name: '#string' }
 

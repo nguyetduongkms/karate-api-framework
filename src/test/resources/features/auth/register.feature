@@ -22,7 +22,8 @@ Feature: Register API
     And request payload
     When method POST
     Then status 200
-    And match response contains { message: 'Success', response: '#object' }
+    And match response.message == 'Success'
+    And match response.response == '#object'
     And match response.response contains
       """
       {
@@ -37,76 +38,36 @@ Feature: Register API
       """
 
   @smoke @register @negative
-  Scenario: Register with an empty username
-    * set payload.username = ''
+  Scenario Outline: Register fails with empty fields
+    * set payload.<field> = ''
     Given path 'api', 'register'
     And request payload
     When method POST
     Then status 422
-    And match response.message == 'The username field is required.'
+    And match response.message == '<expectedError>'
+    Examples:
+      | field      | expectedError                         |
+      | username   | The username field is required.       |
+      | email      | The email field is required.          |
+      | password   | The password field format is invalid. |
+      | firstName  | The first name field is required.     |
+      | lastName   | The last name field is required.      |
+      | userStatus | The user status field is required.    |
+      | phone      | The phone field format is invalid.    |
 
   @smoke @register @negative
-  Scenario: Register with an empty email
-    * set payload.email = ''
+  Scenario Outline: Register with an existing fields
+    * set payload.<field> = existingUser.<field>
     Given path 'api', 'register'
     And request payload
     When method POST
     Then status 422
-    And match response.message == 'The email field is required.'
-
-  @smoke @register @negative
-  Scenario: Register with an empty password
-    * set payload.password = ''
-    Given path 'api', 'register'
-    And request payload
-    When method POST
-    Then status 422
-    And match response.message == 'The password field format is invalid.'
-
-  @smoke @register @negative
-  Scenario: Register with an existing username
-    * set payload.username = existingUser.username
-    Given path 'api', 'register'
-    And request payload
-    When method POST
-    Then status 422
-    And match response.message == 'The username has already been taken.'
-
-  @smoke @register @negative
-  Scenario: Register with an empty first name
-    * set payload.firstName = ''
-    Given path 'api', 'register'
-    And request payload
-    When method POST
-    Then status 422
-    And match response.message == 'The first name field is required.'
-
-  @smoke @register @negative
-  Scenario: Register with an empty last name
-    * set payload.lastName = ''
-    Given path 'api', 'register'
-    And request payload
-    When method POST
-    Then status 422
-    And match response.message == 'The last name field is required.'
-
-  @smoke @register @negative
-  Scenario: Register with an empty user status
-    * set payload.userStatus = ''
-    Given path 'api', 'register'
-    And request payload
-    When method POST
-    Then status 422
-    And match response.message == 'The user status field is required.'
-
-  @smoke @register @negative
-  Scenario: Register with an existing email
-    * set payload.email = existingUser.email
-    Given path 'api', 'register'
-    And request payload
-    When method POST
-    Then status 422
-    And match response.message == 'The email has already been taken.'
+    And match response.message == '<expectedError>'
+    And match response.errors.<field> == ["<expectedError>"]
+    Examples:
+      | field    | expectedError                        |
+      | username | The username has already been taken. |
+      | email    | The email has already been taken.    |
 
   @smoke @register @negative
   Scenario: Register with an invalid email format
@@ -118,16 +79,7 @@ Feature: Register API
     And match response.message == 'The email field must be a valid email address.'
 
   @smoke @register @negative
-  Scenario: Register with a null phone
-    * set payload.phone = null
-    Given path 'api', 'register'
-    And request payload
-    When method POST
-    Then status 422
-    And match response.message == 'The phone field format is invalid.'
-
-  @smoke @register @negative
-  Scenario: Register with an empty phone
+  Scenario: Register with an empty phone field
     * remove payload.phone
     Given path 'api', 'register'
     And request payload

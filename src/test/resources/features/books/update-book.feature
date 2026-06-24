@@ -11,7 +11,7 @@
 Feature: Update book validation
   Background:
     * url baseUrl
-    * def auth = call read('classpath:features/auth/helpers/auth.feature')
+    * def auth = call read('classpath:features/auth/helpers/login-user.feature')
     * header Authorization = 'Bearer ' + auth.token
     * def categoryResult = call read('classpath:features/categories/helpers/get-random-category.feature')
     * def createdBook = call read('classpath:features/books/helpers/create-book.feature') { token: '#(auth.token)' }
@@ -39,50 +39,22 @@ Feature: Update book validation
       """
     And match each response.response.image == { id: '#number? _ > 0 ', path: '#regex public/images/[A-Za-z0-9]+\\.(jpg|jpeg|png|gif|webp)' }
 
-  @books @update-book @negative
-  Scenario: Update a book with an empty name
-    * set payload.name = ''
+  @smoke @books @update-book @negative
+  Scenario Outline: Update a book fail with an empty fields
+    * set payload.<field> = ''
     Given path 'api', 'book', bookId
     And request payload
     When method PUT
     Then status 422
-    And match response.message == 'The name field is required.'
-
-  @books @update-book @negative
-  Scenario: Update a book with an empty price
-    * set payload.price = ''
-    Given path 'api', 'book', bookId
-    And request payload
-    When method PUT
-    Then status 422
-    And match response.message == 'The price field is required.'
-
-  @books @update-book @negative
-  Scenario: Update a book with an empty release date
-    * set payload.release_date = ''
-    Given path 'api', 'book', bookId
-    And request payload
-    When method PUT
-    Then status 422
-    And match response.message == 'The release date field is required.'
-
-  @books @update-book @negative
-  Scenario: Update a book with an empty status
-    * set payload.status = ''
-    Given path 'api', 'book', bookId
-    And request payload
-    When method PUT
-    Then status 422
-    And match response.message == 'The status field is required.'
-
-  @books @update-book @negative
-  Scenario: Update a book with an empty category id
-    * set payload.category_id = ''
-    Given path 'api', 'book', bookId
-    And request payload
-    When method PUT
-    Then status 422
-    And match response.message == 'The category id field is required.'
+    And match response.message == '<expectedError>'
+    And match response.errors.<field> == ["<expectedError>"]
+    Examples:
+      | field        | expectedError                       |
+      | name         | The name field is required.         |
+      | price        | The price field is required.        |
+      | release_date | The release date field is required. |
+      | status       | The status field is required.       |
+      | category_id  | The category id field is required.  |
 
   @books @update-book @negative
   Scenario: Update a book with an empty image id

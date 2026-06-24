@@ -13,36 +13,32 @@
 Feature: Users API
   Background:
     * url baseUrl
-    * def auth = call read('classpath:features/auth/helpers/auth.feature')
+    * def auth = call read('classpath:features/auth/helpers/login-user.feature')
+    * header Authorization = 'Bearer ' + auth.token
 
   @smoke @users @happy-path
   Scenario Outline: Create users from array
-    * header Authorization = 'Bearer ' + auth.token
     * def username = generateUsername()
     * def email = generateEmail(username)
-    * def firstName = '<firstName>'
-    * def lastName = '<lastName>'
-    * def phone = '<phone>'
-    * def userStatus = <userStatus>
+    * def data = { firstName: '<firstName>', lastName: '<lastName>', phone: '<phone>', userStatus: <userStatus> }
     * def payload = read('classpath:templates/users/create-user-request.json')
-
     Given path 'api', 'users'
     And request payload
     When method POST
     Then status 200
-    And match response contains { message: 'Success', response: '#array' }
+    And match response.message == 'Success'
+    And match response.response == '#array'
     And match response.response contains
       """
       {
         username: '#(username)',
-        firstName: '#(firstName)',
-        lastName: '#(lastName)',
+        firstName: '#(data.firstName)',
+        lastName: '#(data.lastName)',
         email: '#(email)',
         password: '#(newUserPassword)',
-        phone: '#(phone)',
-        userStatus: '#(userStatus)'
+        phone: '#(data.phone)',
+        userStatus: '#(data.userStatus)'
       }
       """
-
     Examples:
       | read('classpath:testdata/valid-users.json') |

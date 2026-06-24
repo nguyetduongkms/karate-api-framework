@@ -19,11 +19,10 @@ Feature: Get a random available category
     Given path 'api', 'categorys'
     When method GET
     Then status 200
-    And match response contains { message: 'Success', response: '#array' }
+    And match response.message == 'Success'
+    And match response.response == '#array'
     And assert response.response.length > 0
     And match each response.response == { id: '#number', name: '#string' }
-
     * def randomIndex = Math.floor(Math.random() * response.response.length)
     * def category = response.response[randomIndex]
-
     * def categoryId = category.id

@@ -1,8 +1,17 @@
-({
-  timestamp: function() { return new Date().getTime(); },
-  generateDate: function() { return new Date().toLocaleDateString(); },
-  generateUsername: function() { return 'user_' + Math.floor(Math.random() * 100000); },
-  generateEmail: function(username) { return username + '@anhtester.com'; },
-  generateBookName: function() { return 'book_' + Math.floor(Math.random() * 100000); },
-  generateBookPrice: function() { return Math.floor(Math.random() * 100) + 1; }
-})
+(function() {
+  function timestamp() { return new Date().getTime(); }
+  function generateDate() { return new Date().toLocaleDateString(); }
+  function generateUsername() { return 'user_' + Math.floor(Math.random() * 100000); }
+  function generateEmail(username) { return username + '@anhtester.com'; }
+  function generateBookName() { return 'book_' + Math.floor(Math.random() * 100000); }
+  function generateBookPrice() { return Math.floor(Math.random() * 100) + 1; }
+
+  return {
+    timestamp,
+    generateDate,
+    generateUsername,
+    generateEmail,
+    generateBookName,
+    generateBookPrice
+  };
+})()

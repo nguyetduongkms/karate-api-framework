@@ -22,13 +22,14 @@ Feature: Create book validation
 
   @books @create-book @happy-path
   Scenario: Create a book successfully
-    * def auth = call read('classpath:features/auth/helpers/auth.feature')
+    * def auth = call read('classpath:features/auth/helpers/login-user.feature')
     * header Authorization = 'Bearer ' + auth.token
     Given path 'api', 'book'
     And request payload
     When method post
     Then status 200
-    And match response contains { message: 'Success', response: '#object' }
+    And match response.message == 'Success'
+    And match response.response == '#object'
     And match response.response contains
       """
       {
