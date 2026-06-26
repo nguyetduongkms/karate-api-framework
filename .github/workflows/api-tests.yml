@@ -42,6 +42,7 @@ jobs:
           name: cucumber-reports
           path: target/karate-reports/
           retention-days: 14
+          overwrite: true
 
       - name: Upload Cucumber Reports
         if: always()
@@ -50,6 +51,7 @@ jobs:
           name: cucumber-reports
           path: target/cucumber-html-reports/
           retention-days: 14
+          overwrite: true
 
       - run: echo "The report is generated successfully!"
       - run: echo "🍏 This job's status is ${{ job.status }}."
