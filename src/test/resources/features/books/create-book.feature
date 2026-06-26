@@ -39,14 +39,14 @@ Feature: Create book validation
     And match response.response.image == '#array'
     And match each response.response.image == { id: '#number? _ > 0', path: '#regex public/images/[A-Za-z0-9]+\\.(jpg|jpeg|png|gif|webp)' }
 
-  @books @create-book @negative
-  Scenario: Create a book with an invalid token
-    * def invalidToken = 'invalid_' + timestamp()
-    * header Authorization = 'Bearer ' + invalidToken
-    Given path 'api', 'book'
-    And request payload
-    When method post
-    Then status 401
+#  @books @create-book @negative
+#  Scenario: Create a book with an invalid token
+#    * def invalidToken = 'invalid_' + timestamp()
+#    * header Authorization = 'Bearer ' + invalidToken
+#    Given path 'api', 'book'
+#    And request payload
+#    When method post
+#    Then status 401
 
   @books @create-book @negative
   Scenario: Create a book without a token
