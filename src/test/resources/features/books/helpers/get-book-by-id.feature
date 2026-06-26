@@ -24,18 +24,12 @@ Feature: Get book by id helper
     Then status 200
     And match response.message == 'Success'
     And match response.response == '#object'
-    And match response.response contains
-      """
-      {
-        id: '#(bookId)',
-        name: '#string',
-        category_id: '#number',
-        price: '#number',
-        release_date: '#string',
-        status: '#number',
-        image: '#array'
-      }
-      """
+    And match response.response.id == bookId
+    And match response.response.name == '#string'
+    And match response.response.category_id == '#number? _ > 0'
+    And match response.response.price == '#number? _ > 0'
+    And match response.response.release_date == '#regex [0-9]{4}-[0-9]{2}-[0-9]{2}'
+    And match response.response.status == '#number'
+    And match response.response.image == '#array'
     And match each response.response.image == { id: '#number? _ > 0', path: '#regex public/images/[A-Za-z0-9]+\\.(jpg|jpeg|png|gif|webp)' }
-
     * def getBookByIdResponse = response

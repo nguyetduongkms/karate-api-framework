@@ -19,38 +19,21 @@ Feature: Update book helper
     * url baseUrl
 
   Scenario: Update a book by id
-    * match token == '#string'
-    * match bookId == '#number'
-    * match originalPayload == '#object'
-    * match updateFields == '#object'
     * header Authorization = 'Bearer ' + token
-    * def mergePayload =
-      """
-      function(original, updates) {
-        var result = {};
-        for (var key in original) result[key] = original[key];
-        for (var key in updates) result[key] = updates[key];
-        return result;
-      }
-      """
-    * def payload = mergePayload(originalPayload, updateFields)
+    * def payload = karate.merge(originalPayload, updateFields)
     Given path 'api', 'book', bookId
     And request payload
     When method PUT
     Then status 200
-    And match response contains { message: 'Success', response: '#object' }
-    And match response.response contains
-      """
-      {
-        id: '#(bookId)',
-        name: '#(payload.name)',
-        category_id: '#(payload.category_id)',
-        price: '#(payload.price)',
-        release_date: '#(payload.release_date)',
-        status: '#(payload.status)',
-        image: '#array'
-      }
-      """
-    And match each response.response.image == { id: '#number? _ > 0 ', path: '#regex public/images/[A-Za-z0-9]+\\.(jpg|jpeg|png|gif|webp)' }
+    And match response.message == 'Success'
+    And match response.response == '#object'
+    And match response.response.id == '#number? _ > 0'
+    And match response.response.name == payload.name
+    And match response.response.category_id == payload.category_id
+    And match response.response.price == payload.price
+    And match response.response.release_date == payload.release_date
+    And match response.response.status == payload.status
+    And match response.response.image == '#array'
+    And match each response.response.image == { id: '#number? _ > 0', path: '#regex public/images/[A-Za-z0-9]+\\.(jpg|jpeg|png|gif|webp)' }
     * def updatedPayload = payload
     * def updateBookResponse = response

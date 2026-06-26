@@ -1,9 +1,9 @@
 (function() {
   function timestamp() { return new Date().getTime(); }
   function generateDate() { return new Date().toLocaleDateString(); }
-  function generateUsername() { return 'user_' + Math.floor(Math.random() * 100000); }
+  function generateUsername() { return 'user_' + Math.floor(Math.random() * 1000000); }
   function generateEmail(username) { return username + '@anhtester.com'; }
-  function generateBookName() { return 'book_' + Math.floor(Math.random() * 100000); }
+  function generateBookName() { return 'book_' + Math.floor(Math.random() * 1000000); }
   function generateBookPrice() { return Math.floor(Math.random() * 100) + 1; }
 
   return {

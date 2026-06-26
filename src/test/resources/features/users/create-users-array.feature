@@ -1,9 +1,7 @@
 # ================================================================
 # FEATURE: USERS API
 # ================================================================
-# Endpoint chain:
-#   POST /api/register
-#   POST /api/login
+# Endpoint:
 #   POST /api/users
 #
 # Purpose:
@@ -13,7 +11,7 @@
 Feature: Users API
   Background:
     * url baseUrl
-    * def auth = call read('classpath:features/auth/helpers/login-user.feature')
+    * def auth = callonce read('classpath:features/auth/helpers/login-user.feature')
     * header Authorization = 'Bearer ' + auth.token
 
   @smoke @users @happy-path
@@ -28,15 +26,15 @@ Feature: Users API
     Then status 200
     And match response.message == 'Success'
     And match response.response == '#array'
-    And match response.response contains
+    And match each response.response ==
       """
       {
         username: '#(username)',
         firstName: '#(data.firstName)',
         lastName: '#(data.lastName)',
         email: '#(email)',
-        password: '#(newUserPassword)',
         phone: '#(data.phone)',
+        password: '#(newUserPassword)',
         userStatus: '#(data.userStatus)'
       }
       """

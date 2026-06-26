@@ -11,7 +11,7 @@
 #   token
 #
 # Returns:
-#   bookId, payload
+#   bookId
 # ================================================================
 @ignore
 Feature: Create book helper
@@ -35,19 +35,12 @@ Feature: Create book helper
     Then status 200
     And match response.message == 'Success'
     And match response.response == '#object'
-    And match response.response contains
-      """
-      {
-        id: '#number? _ > 0',
-        name: '#(payload.name)',
-        category_id: '#(payload.category_id)',
-        price: '#(payload.price)',
-        release_date: '#(payload.release_date)',
-        status: '#(payload.status)',
-        image: '#array'
-      }
-      """
-    And match each response.response.image == { id: '#number? _ > 0 ', path: '#regex public/images/[A-Za-z0-9]+\\.(jpg|jpeg|png|gif|webp)' }
-
+    And match response.response.id == '#number? _ > 0'
+    And match response.response.name == payload.name
+    And match response.response.category_id == payload.category_id
+    And match response.response.price == payload.price
+    And match response.response.release_date == payload.release_date
+    And match response.response.status == payload.status
+    And match response.response.image == '#array'
+    And match each response.response.image == { id: '#number? _ > 0', path: '#regex public/images/[A-Za-z0-9]+\\.(jpg|jpeg|png|gif|webp)' }
     * def bookId = response.response.id
-    * def payload = payload

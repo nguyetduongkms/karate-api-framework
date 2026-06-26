@@ -24,21 +24,16 @@ Feature: Register API
     Then status 200
     And match response.message == 'Success'
     And match response.response == '#object'
-    And match response.response contains
-      """
-      {
-        id: '#number? _ > 0',
-        username: '#(payload.username)',
-        firstName: '#(payload.firstName)',
-        lastName: '#(payload.lastName)',
-        email: '#(payload.email)',
-        phone: '#(payload.phone)',
-        userStatus: '#(payload.userStatus)'
-      }
-      """
+    And match response.response.id == '#number? _ > 0'
+    And match response.response.username == payload.username
+    And match response.response.firstName == payload.firstName
+    And match response.response.lastName == payload.lastName
+    And match response.response.email == payload.email
+    And match response.response.phone == payload.phone
+    And match response.response.userStatus == payload.userStatus
 
   @smoke @register @negative
-  Scenario Outline: Register fails with empty fields
+  Scenario Outline: Register fails with empty <field> field
     * set payload.<field> = ''
     Given path 'api', 'register'
     And request payload
@@ -56,7 +51,7 @@ Feature: Register API
       | phone      | The phone field format is invalid.    |
 
   @smoke @register @negative
-  Scenario Outline: Register with an existing fields
+  Scenario Outline: Register with an existing <field>
     * set payload.<field> = existingUser.<field>
     Given path 'api', 'register'
     And request payload

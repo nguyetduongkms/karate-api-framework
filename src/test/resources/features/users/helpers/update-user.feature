@@ -1,27 +1,29 @@
 # ================================================================
-# HELPER: CREATE USER
+# HELPER: UPDATE USER
 # ================================================================
 # Endpoint:
-#   POST /api/register
+#   PUT /api/user/{id}
 #
 # Purpose:
-#   Register a unique user for tests that need fresh credentials.
+#   Merge update fields into an existing user payload and update user
+#
+# Required input:
+#   token, userId, originalPayload, updateFields
 #
 # Returns:
-#   username, password
+#   updatedPayload, updateUserResponse
 # ================================================================
 @ignore
-Feature: Create user helper
-  Scenario: Register a unique user
+Feature: Update user helper
+  Background:
     * url baseUrl
-    * def username = generateUsername()
-    * def email = generateEmail(username)
-    * def payload = read('classpath:templates/auth/register-request.json')
-    * set payload.userStatus = karate.get('userStatus', 1)
 
-    Given path 'api', 'register'
+  Scenario: Update user by id
+    * header Authorization = 'Bearer ' + token
+    * def payload = karate.merge(originalPayload, updateFields)
+    Given path 'api', 'user', userId
     And request payload
-    When method POST
+    When method PUT
     Then status 200
     And match response.message == 'Success'
     And match response.response == '#object'
@@ -32,6 +34,5 @@ Feature: Create user helper
     And match response.response.email == payload.email
     And match response.response.phone == payload.phone
     And match response.response.userStatus == payload.userStatus
-    * def username = response.response.username
-    * def password = payload.password
-    * def userId = response.response.id
+    * def updatedPayload = payload
+    * def updateUserResponse = response

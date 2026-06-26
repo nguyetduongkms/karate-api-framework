@@ -10,6 +10,7 @@
 Feature: Login API
   Background:
     * url baseUrl
+    * def auth = callonce read('classpath:features/auth/helpers/login-user.feature')
     * def user = call read('classpath:features/auth/helpers/create-user.feature')
 
   @smoke @login @happy-path
@@ -46,21 +47,18 @@ Feature: Login API
     And match response.errors == 'User is InActive'
 
   @smoke @login @negative
-  Scenario: Login when username is changed to new username
-    * def newUsername = generateUsername()
+  Scenario Outline: Login when <field> is changed to new <field>
+    * def updatedField = {}
+    * karate.set('updatedField', field, user[field] + '_new')
+    * def updatedUser = call read('classpath:features/users/helpers/update-user.feature') { token: '#(auth.token)', userId: '#(user.userId)', originalPayload: '#(user.payload)', updateFields: '#(updatedField)' }
     Given path 'api', 'login'
-    And request { username: '#(newUsername)', password: '#(user.password)' }
+    And request { username: '#(user.username)', password: '#(user.password)' }
     When method POST
     Then status 200
     And match response.message == 'Login failed'
-    And match response.errors == 'User name not found'
+    And match response.errors == '<expectedError>'
 
-  @smoke @login @negative
-  Scenario: Login when password is changed to new password
-    * def newPassword = user.password + '_new'
-    Given path 'api', 'login'
-    And request { username: '#(user.username)', password: '#(newPassword)' }
-    When method POST
-    Then status 200
-    And match response.message == 'Login failed'
-    And match response.errors == 'Password is incorrect'
+    Examples:
+      | field    | expectedError         |
+      | username | User name not found   |
+      | password | Password is incorrect |
