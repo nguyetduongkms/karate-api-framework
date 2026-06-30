@@ -1,0 +1,20 @@
+[
+  {
+    "firstName": "John",
+    "lastName": "James",
+    "phone": "0912345678",
+    "userStatus": 1
+  },
+  {
+    "firstName": "Anna",
+    "lastName": "Smith",
+    "phone": "0912345679",
+    "userStatus": 1
+  },
+  {
+    "firstName": "David",
+    "lastName": "Brown",
+    "phone": "0912345680",
+    "userStatus": 1
+  }
+]

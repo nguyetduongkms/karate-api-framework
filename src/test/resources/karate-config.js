@@ -97,9 +97,8 @@ function fn() {
     // ----------------------------------------------------------------
     // [6] HELPER FUNCTIONS — available in all feature files
     // ----------------------------------------------------------------
-    config.timestamp       = function() { return new Date().getTime(); };
-    config.generateEmail   = function() { return 'test_' + new Date().getTime() + '@anhtester.com'; };
-    config.generateUsername= function() { return 'user_' + Math.floor(Math.random() * 100000); };
+    var utils = karate.read('classpath:utils/data-generators.js');
+    Object.assign(config, utils);
 
     // ----------------------------------------------------------------
     // [7] RETURN CONFIG — Karate injects this into every Scenario context
