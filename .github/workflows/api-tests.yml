@@ -1,10 +1,5 @@
 name: API Tests
 on:
-  push:
-    branches:
-      - main
-      - feat-github_action_CI
-
   workflow_dispatch:
     inputs:
       test_tag:
@@ -13,6 +8,7 @@ on:
         default: '@smoke'
         type: choice
         options:
+          - '@smoke'
           - '@happy-path'
           - '@negative'
 
