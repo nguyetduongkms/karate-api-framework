@@ -5,16 +5,16 @@ on:
       - main
       - feat-github_action_CI
 
-    workflow_dispatch:
-      inputs:
-        test_tag:
-          description: 'Karate tag to run'
-          required: false
-          default: '@smoke'
-          type: choice
-          options:
-            - @happy-path
-            - @negative
+  workflow_dispatch:
+    inputs:
+      test_tag:
+        description: 'Karate tag to run'
+        required: false
+        default: '@smoke'
+        type: choice
+        options:
+          - '@happy-path'
+          - '@negative'
 
 jobs:
   test:
@@ -42,7 +42,7 @@ jobs:
           EXISTING_USERNAME: ${{ secrets.EXISTING_USERNAME }}
           EXISTING_PASSWORD: ${{ secrets.EXISTING_PASSWORD }}
           EXISTING_EMAIL: ${{ secrets.EXISTING_EMAIL }}
-        run: mvn clean test -D"karate.options=--tags {{ inputs.test_tag }}"
+        run: mvn clean test -D"karate.options=--tags ${{ inputs.test_tag }}"
 
       - name: Upload Karate Reports
         if: always()
