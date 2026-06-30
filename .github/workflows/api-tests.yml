@@ -1,6 +1,10 @@
 name: API Tests
 
 on:
+  push:
+    branches:
+      - feat-github_action_CI
+      
   workflow_dispatch:
     inputs:
       test_tag:
