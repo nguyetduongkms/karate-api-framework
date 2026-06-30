@@ -44,8 +44,8 @@ jobs:
           EXISTING_USERNAME: ${{ secrets.EXISTING_USERNAME }}
           EXISTING_PASSWORD: ${{ secrets.EXISTING_PASSWORD }}
           EXISTING_EMAIL: ${{ secrets.EXISTING_EMAIL }}
-        run: mvn clean test -D"karate.options=--tags ${{ inputs.test_tag }}"
-
+        run: mvn clean test -D"karate.options=--tags ${{ inputs.test_tag || '@smoke' }}"
+        
       - name: Upload Karate Reports
         if: always()
         uses: actions/upload-artifact@v5
