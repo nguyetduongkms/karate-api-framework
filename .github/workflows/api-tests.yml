@@ -6,6 +6,7 @@ on:
       - feat-github_action_CI
       
   workflow_dispatch:
+    name: on-demand
     inputs:
       test_tag:
         description: 'Karate tag to run'
@@ -20,7 +21,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
