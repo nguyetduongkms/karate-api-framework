@@ -38,7 +38,7 @@ public class TestRunner {
         Results results = Runner
                 .path("classpath:features")
                 .outputCucumberJson(true)   // ← QUAN TRỌNG
-                .parallel(4);
+                .parallel(5);
 
         // ----------------------------------------------------------------
         // [STEP 3] GENERATE CUCUMBER HTML REPORT (Masterthought)

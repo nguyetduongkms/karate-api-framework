@@ -1,34 +1,42 @@
 # ================================================================
-# HELPER: CREATE BOOK
+# FEATURE: BOOK API - CREATE BOOK TESTS
 # ================================================================
 # Endpoint:
 #   POST /api/book
 #
 # Purpose:
-#   Create a book helper.
-#
-# Returns:
-#   bookId
+#   Verify book creation behavior under authorized,
+#   unauthorized, and missing token scenarios.
 # ================================================================
-@ignore
-Feature: Create book helper
+Feature: Create book validation
   Background:
     * url baseUrl
-    * header Authorization = 'Bearer ' + authToken
-
-  Scenario: Create a book
     * def bookName = generateBookName()
-    * def releaseDate = generateDate()
     * def bookPrice = generateBookPrice()
+    * def releaseDate = generateDate()
     * def categoryResult = call read('classpath:features/categories/helpers/get-random-category.feature')
     * def categoryId = categoryResult.categoryId
     * def imgResult = call read('classpath:features/images/helpers/get-random-image.feature')
     * def imageId = imgResult.imageId
     * def payload = read('classpath:templates/book/book-request.json')
+    * configure afterScenario =
+      """
+      function() {
+        var createdBook = karate.get('createdBook');
+        if (createdBook && createdBook.bookId) {
+          karate.call('classpath:features/books/helpers/delete-book.feature', {
+            bookId: createdBook.bookId
+          });
+        }
+      }
+      """
 
+  @books @create-book @happy-path
+  Scenario: Create a book successfully
+    * header Authorization = 'Bearer ' + authToken
     Given path 'api', 'book'
     And request payload
-    When method POST
+    When method post
     Then status 200
     And match response.message == 'Success'
     And match response.response == '#object'
@@ -40,4 +48,19 @@ Feature: Create book helper
     And match response.response.status == payload.status
     And match response.response.image == '#array'
     And match each response.response.image == { id: '#number? _ > 0', path: '#regex public/images/[A-Za-z0-9]+\\.(jpg|jpeg|png|gif|webp)' }
-    * def bookId = response.response.id
+
+  @books @create-book @negative
+  Scenario: Create a book with an invalid token
+    * def invalidToken = 'invalid_' + timestamp()
+    * header Authorization = 'Bearer ' + invalidToken
+    Given path 'api', 'book'
+    And request payload
+    When method post
+    Then status 401
+
+  @books @create-book @negative
+  Scenario: Create a book without a token
+    Given path 'api', 'book'
+    And request payload
+    When method post
+    Then status 401

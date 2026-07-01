@@ -6,10 +6,8 @@
  * REQUIRED location: src/test/resources/karate-config.js
  *
  * How to specify the environment:
- *   - mvn test                          → uses 'dev' (default)
- *   - mvn test -Dkarate.env=qa          → uses 'qa'
- *   - mvn test -Dkarate.env=staging     → uses 'staging'
- *   - mvn test -Dkarate.env=production  → uses 'production'
+ *   - mvn test                       → uses 'dev' (default)
+ *   - mvn test -Dkarate.env=staging  → uses 'staging'
  *
  * Secrets (credentials) are read from environment variables.
  * For local development, copy .env.example to .env and fill in values.
@@ -20,6 +18,12 @@ function fn() {
 
     var env = karate.env || 'dev';
     karate.log('>>> Karate is running on environment:', env);
+
+    var supportedEnvironments = ['dev', 'staging'];
+    if (supportedEnvironments.indexOf(env) === -1) {
+        throw new Error('Unsupported karate.env: ' + env
+            + '. Supported environments: ' + supportedEnvironments.join(', '));
+    }
 
     // ----------------------------------------------------------------
     // [1] LOAD ENVIRONMENT-SPECIFIC YAML CONFIG
@@ -95,17 +99,23 @@ function fn() {
     });
 
     // ----------------------------------------------------------------
-    // [6] HELPER FUNCTIONS — available in all feature files
+    // [6] GLOBAL AUTH TOKEN — available to all Features
     // ----------------------------------------------------------------
-    config.timestamp       = function() { return new Date().getTime(); };
-    config.generateDate = function () {return new Date().toLocaleDateString()}
-    config.generateUsername= function() { return 'user_' + Math.floor(Math.random() * 100000); };
-    config.generateEmail   = function(username) { return username + '@anhtester.com'; };
-    config.generateBookName = function() { return 'book_' + Math.floor(Math.random() * 100000); };
-    config.generateBookPrice = function() { return Math.floor(Math.random() * 100) + 1; };
+    var auth = karate.callSingle('classpath:features/auth/helpers/login-user.feature', {
+        baseUrl: config.baseUrl,
+        username: config.demoUser.username,
+        password: config.demoUser.password
+    });
+    config.authToken = auth.token;
 
     // ----------------------------------------------------------------
-    // [7] RETURN CONFIG — Karate injects this into every Scenario context
+    // [7] HELPER FUNCTIONS — available in all feature files
+    // ----------------------------------------------------------------
+    var utils = karate.read('classpath:utils/data-generators.js');
+    Object.assign(config, utils);
+
+    // ----------------------------------------------------------------
+    // [8] RETURN CONFIG — Karate injects this into every Scenario context
     // ----------------------------------------------------------------
     return config;
 }

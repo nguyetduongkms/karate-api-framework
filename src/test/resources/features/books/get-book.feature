@@ -1,24 +1,21 @@
 # ================================================================
-# HELPER: GET BOOK BY ID
+# FEATURE: BOOK API - GET BOOK TESTS
 # ================================================================
 # Endpoint:
 #   GET /api/book/{id}
 #
 # Purpose:
-#   Retrieve a book by id and validate its response schema.
-#
-# Required input:
-#   bookId
-#
-# Returns:
-#   getBookByIdResponse
+#   Verify book retrieval behavior for both existing
+#   and non-existent book IDs.
 # ================================================================
-@ignore
-Feature: Get book by id helper
+Feature: Get book validation
   Background:
     * url baseUrl
+    * def createdBook = call read('classpath:features/books/helpers/create-book.feature')
+    * def bookId = createdBook.bookId
 
-  Scenario: Get a book by id
+  @books @get-book @happy-path
+  Scenario: Get a book successfully
     Given path 'api', 'book', bookId
     When method GET
     Then status 200
@@ -32,4 +29,11 @@ Feature: Get book by id helper
     And match response.response.status == '#number'
     And match response.response.image == '#array'
     And match each response.response.image == { id: '#number? _ > 0', path: '#regex public/images/[A-Za-z0-9]+\\.(jpg|jpeg|png|gif|webp)' }
-    * def getBookByIdResponse = response
+
+  @books @get-book @negative
+  Scenario: Get a book that does not exist
+    * def nonExistentBookId = timestamp()
+    Given path 'api', 'book', nonExistentBookId
+    When method GET
+    Then status 400
+    And match response.message == 'Not found'
