@@ -17,9 +17,9 @@
 Feature: Update user helper
   Background:
     * url baseUrl
+    * header Authorization = 'Bearer ' + authToken
 
   Scenario: Update user by id
-    * header Authorization = 'Bearer ' + token
     * def payload = karate.merge(originalPayload, updateFields)
     Given path 'api', 'user', userId
     And request payload

@@ -5,10 +5,7 @@
 #   POST /api/book
 #
 # Purpose:
-#   Create a book using an authenticated token and category id.
-#
-# Required input:
-#   token
+#   Create a book helper.
 #
 # Returns:
 #   bookId
@@ -17,7 +14,7 @@
 Feature: Create book helper
   Background:
     * url baseUrl
-    * header Authorization = 'Bearer ' + token
+    * header Authorization = 'Bearer ' + authToken
 
   Scenario: Create a book
     * def bookName = generateBookName()

@@ -31,9 +31,7 @@ karate-api-framework/
             ├── logback-test.xml                     # Logging configuration
             ├── config/
             │   ├── dev.yaml                         # Dev environment config
-            │   ├── qa.yaml                          # QA environment config
-            │   ├── staging.yaml                     # Staging environment config
-            │   └── production.yaml                  # Production environment config
+            │   └── staging.yaml                     # Staging environment config
             ├── templates/
             │   └── auth/
             │       └── register-request.json        # Register request payload (uses #(username), #(email))
@@ -112,14 +110,8 @@ mvn clean test
 # Dev (default)
 mvn clean test
 
-# QA
-mvn clean test -Dkarate.env=qa
-
 # Staging
 mvn clean test -Dkarate.env=staging
-
-# Production
-mvn clean test -Dkarate.env=production
 ```
 
 ### 4. Run by tag
@@ -172,21 +164,20 @@ target/
 
 ## Environment Configuration
 
-Each environment has its own YAML file under `src/test/resources/config/`. To add a new environment (e.g. `uat`):
+The framework supports `dev` and `staging`. If `karate.env` is omitted, Karate uses `dev`.
 
-1. Create `src/test/resources/config/uat.yaml` with the appropriate values:
-```yaml
-baseUrl: https://uat-api.anhtester.com
-connectTimeout: 15000
-readTimeout: 45000
-logLevel: info
-ssl: true
-```
-
-2. Run with:
 ```bash
-mvn clean test -Dkarate.env=uat
+# Dev (default)
+mvn test
+
+# Staging
+mvn test -Dkarate.env=staging
 ```
+
+In PowerShell, quote the Maven property: `mvn test "-Dkarate.env=staging"`.
+
+Environment values are stored in `src/test/resources/config/dev.yaml` and
+`src/test/resources/config/staging.yaml`.
 
 ## Important Notes
 

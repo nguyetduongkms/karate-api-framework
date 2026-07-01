@@ -32,6 +32,8 @@ Feature: Register API
     And match response.response.phone == payload.phone
     And match response.response.userStatus == payload.userStatus
 
+    * call read('classpath:features/users/helpers/delete-user.feature') { username: '#(response.response.username)' }
+
   @smoke @register @negative
   Scenario Outline: Register fails with empty <field> field
     * set payload.<field> = ''

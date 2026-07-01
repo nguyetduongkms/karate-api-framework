@@ -5,23 +5,21 @@
 #   POST /api/login
 #
 # Purpose:
-#   Login with a supplied username and password.
+#   Get token
 #
 # Returns:
-#   token, userId
+#   token
 # ================================================================
 @ignore
-Feature: Login user helper
+Feature: Get token helper
   Background:
     * url baseUrl
-    * def user = call read('classpath:features/auth/helpers/create-user.feature')
 
-  Scenario: Login with valid credentials
+  Scenario: Get valid token
     Given path 'api', 'login'
-    And request { username: '#(user.username)', password: '#(user.password)' }
+    And request { username: '#(username)', password: '#(password)' }
     When method POST
     Then status 200
     And match response.token == '#regex \\d+\\|[A-Za-z0-9]{40,}'
 
     * def token = response.token
-    * def userId = user.userId

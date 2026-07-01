@@ -11,11 +11,28 @@
 Feature: Update book validation
   Background:
     * url baseUrl
-    * def auth = callonce read('classpath:features/auth/helpers/login-user.feature')
-    * header Authorization = 'Bearer ' + auth.token
-    * def createdBook = call read('classpath:features/books/helpers/create-book.feature') { token: '#(auth.token)' }
+    * header Authorization = 'Bearer ' + authToken
+    * def createdBook = call read('classpath:features/books/helpers/create-book.feature')
     * def payload = createdBook.payload
     * def bookId = createdBook.bookId
+    * configure afterScenario =
+      """
+      function() {
+        var createdBook = karate.get('createdBook');
+        if (createdBook && createdBook.bookId) {
+          karate.call('classpath:features/books/helpers/delete-book.feature', {
+            bookId: createdBook.bookId
+          });
+        }
+
+        var secondBook = karate.get('secondBook');
+        if (secondBook && secondBook.bookId) {
+          karate.call('classpath:features/books/helpers/delete-book.feature', {
+            bookId: secondBook.bookId
+          });
+        }
+      }
+      """
 
   @books @update-book @happy-path
   Scenario: Update a book successfully

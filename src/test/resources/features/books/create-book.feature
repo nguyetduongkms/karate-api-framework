@@ -19,11 +19,21 @@ Feature: Create book validation
     * def imgResult = call read('classpath:features/images/helpers/get-random-image.feature')
     * def imageId = imgResult.imageId
     * def payload = read('classpath:templates/book/book-request.json')
+    * configure afterScenario =
+      """
+      function() {
+        var createdBook = karate.get('createdBook');
+        if (createdBook && createdBook.bookId) {
+          karate.call('classpath:features/books/helpers/delete-book.feature', {
+            bookId: createdBook.bookId
+          });
+        }
+      }
+      """
 
   @books @create-book @happy-path
   Scenario: Create a book successfully
-    * def auth = callonce read('classpath:features/auth/helpers/login-user.feature')
-    * header Authorization = 'Bearer ' + auth.token
+    * header Authorization = 'Bearer ' + authToken
     Given path 'api', 'book'
     And request payload
     When method post

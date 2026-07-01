@@ -10,8 +10,19 @@
 Feature: Login API
   Background:
     * url baseUrl
-    * def auth = callonce read('classpath:features/auth/helpers/login-user.feature')
-    * def user = call read('classpath:features/auth/helpers/create-user.feature')
+    * def user = callonce read('classpath:features/auth/helpers/create-user.feature')
+    * configure afterFeature =
+      """
+      function() {
+        var user = karate.get('user');
+        var cleanupUsername = karate.get('cleanupUsername') || user.username;
+
+        karate.call('classpath:features/users/helpers/delete-user.feature', {
+          user: user,
+          username: cleanupUsername
+        });
+      }
+      """
 
   @smoke @login @happy-path
   Scenario: Login with a newly registered user
@@ -38,25 +49,28 @@ Feature: Login API
 
   @smoke @login @negative
   Scenario: Login with userStatus = 0
-    * def user = call read('classpath:features/auth/helpers/create-user.feature') { userStatus: 0 }
+    * def inActiveUser = call read('classpath:features/auth/helpers/create-user.feature') { userStatus: 0 }
     Given path 'api', 'login'
-    And request { username: '#(user.username)', password: '#(user.password)' }
+    And request { username: '#(inActiveUser.username)', password: '#(inActiveUser.password)' }
     When method POST
     Then status 200
     And match response.message == 'Login failed'
     And match response.errors == 'User is InActive'
+    * call read('classpath:features/users/helpers/delete-user.feature') { username: '#(inActiveUser.username)' }
 
   @smoke @login @negative
-  Scenario Outline: Login when <field> is changed to new <field>
+  Scenario Outline: Login fails with old credentials after <field> is updated
+    * def changedUser = call read('classpath:features/auth/helpers/create-user.feature')
     * def updatedField = {}
-    * karate.set('updatedField', field, user[field] + '_new')
-    * def updatedUser = call read('classpath:features/users/helpers/update-user.feature') { token: '#(auth.token)', userId: '#(user.userId)', originalPayload: '#(user.payload)', updateFields: '#(updatedField)' }
+    * karate.set('updatedField', field, changedUser[field] + '_new')
+    * def updatedUser = call read('classpath:features/users/helpers/update-user.feature') { userId: '#(changedUser.userId)', originalPayload: '#(changedUser.payload)', updateFields: '#(updatedField)' }
     Given path 'api', 'login'
-    And request { username: '#(user.username)', password: '#(user.password)' }
+    And request { username: '#(changedUser.username)', password: '#(changedUser.password)' }
     When method POST
     Then status 200
     And match response.message == 'Login failed'
     And match response.errors == '<expectedError>'
+    * call read('classpath:features/users/helpers/delete-user.feature') { username: '#(updatedUser.payload.username)' }
 
     Examples:
       | field    | expectedError         |

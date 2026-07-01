@@ -11,8 +11,7 @@
 Feature: Get book validation
   Background:
     * url baseUrl
-    * def auth = callonce read('classpath:features/auth/helpers/login-user.feature')
-    * def createdBook = call read('classpath:features/books/helpers/create-book.feature') {token: '#(auth.token)'}
+    * def createdBook = call read('classpath:features/books/helpers/create-book.feature')
     * def bookId = createdBook.bookId
 
   @books @get-book @happy-path

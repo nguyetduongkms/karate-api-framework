@@ -11,8 +11,22 @@
 Feature: Users API
   Background:
     * url baseUrl
-    * def auth = callonce read('classpath:features/auth/helpers/login-user.feature')
-    * header Authorization = 'Bearer ' + auth.token
+    * header Authorization = 'Bearer ' + authToken
+    * configure afterScenario =
+      """
+      function() {
+        var payload = karate.get('payload') || [];
+
+        for (var i = 0; i < payload.length; i++) {
+          var username = payload[i].username;
+          if (username) {
+            karate.call('classpath:features/users/helpers/delete-user.feature', {
+              username: username
+            });
+          }
+        }
+      }
+      """
 
   @smoke @users @happy-path
   Scenario Outline: Create users from array

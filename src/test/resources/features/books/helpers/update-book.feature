@@ -8,7 +8,7 @@
 #   Merge update fields into an existing book payload and submit it.
 #
 # Required input:
-#   token, bookId, originalPayload, updateFields
+#   bookId, originalPayload, updateFields
 #
 # Returns:
 #   updatedPayload, updateBookResponse
@@ -19,7 +19,7 @@ Feature: Update book helper
     * url baseUrl
 
   Scenario: Update a book by id
-    * header Authorization = 'Bearer ' + token
+    * header Authorization = 'Bearer ' + authToken
     * def payload = karate.merge(originalPayload, updateFields)
     Given path 'api', 'book', bookId
     And request payload
